@@ -1,0 +1,104 @@
+# 网站基础信息
+site:
+  tab: Mo_Han136
+  title: Mo_Han136
+  description: 这里是Mo_Han136的个人主页，展示自我介绍、项目作品和联系信息。
+  language: zh
+  favicon: /favicon.ico
+  theme:
+    light: winter
+    dark: dracula
+    code: github-dark
+  date_format: YYYY MMM DD ddd
+  blog:
+    pageSize: 8
+  menu:
+    - id: home
+      text: 首页
+      href: /
+      svg: "material-symbols:home-outline-rounded"
+      target: _self
+    - id: about
+      text: 关于
+      href: /about
+      svg: "material-symbols:info-outline-rounded"
+      target: _self
+    - id: blog
+      text: 文章
+      href: /blog
+      svg: "material-symbols:book-2-outline-rounded"
+      target: _self
+      subItems:
+        - id: all
+          text: 全部文章
+          href: /blog
+          svg: "material-symbols:ink-pen-outline-rounded"
+          target: _self
+        - id: documentation
+          text: 文档
+          href: /blog/category/Documentation
+          svg: "material-symbols:unknown-document-outline-rounded"
+          target: _self
+        - id: examples
+          text: 示例
+          href: /blog/category/Examples
+          svg: "material-symbols:deployed-code-outline"
+          target: _self
+    - id: project
+      text: 作品
+      href: /project
+      svg: "material-symbols:code-blocks-outline"
+      target: _self
+    - id: friend
+      text: 友链
+      href: /friend
+      svg: "material-symbols:supervisor-account-outline-rounded"
+      target: _self
+    - id: contact
+      text: 邮箱
+      href: "mailto:mohan136.davidhu@gmail.com"
+      target: _blank
+      svg: "material-symbols:attach-email-outline-rounded"
+
+# 用户个人信息
+user:
+  name: Mo_Han136
+  site: "https://example.com"
+  avatar: /profile.png
+  sidebar:
+    social:
+      - href: "https://example.com/"
+        ariaLabel: 待补充支持链接
+        title: 待补充支持链接
+        svg: "ri:cup-line"
+      - href: "https://github.com/GoudoMahan"
+        ariaLabel: GitHub 主页
+        title: GitHub 主页
+        svg: "ri:github-line"
+      - href: "https://space.bilibili.com/475480857"
+        ariaLabel: Bilibili主页
+        title: Bilibili主页
+        svg: "ri:bilibili-line"
+      - href: "https://x.com/Mo_Han136"
+        ariaLabel: X 主页
+        title: X 主页
+        svg: "ri:twitter-line"
+  footer:
+    social:
+      - href: "https://example.com/"
+        ariaLabel: 待补充支持链接
+        title: 待补充支持链接
+        svg: "ri:cup-line"
+      - href: "https://github.com/GoudoMahan"
+        ariaLabel: GitHub 主页
+        title: GitHub 主页
+        svg: "ri:github-line"
+      - href: "https://space.bilibili.com/475480857"
+        ariaLabel: Bilibili主页
+        title: Bilibili主页
+        svg: "ri:bilibili-line"
+      - href: "https://x.com/Mo_Han136"
+        ariaLabel: X 主页
+        title: X 主页
+        svg: "ri:twitter-line"
+  

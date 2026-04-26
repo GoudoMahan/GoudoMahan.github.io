@@ -1,0 +1,117 @@
+---
+import { Icon } from "astro-icon/components";
+import MainCard from "@/components/MainCard.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="作品">
+  <MainCard
+    title="作品"
+    description="这里展示个人项目、练习作品和正在整理中的内容，未补充的项目名称先用中文占位。"
+    image="/project.jpg"
+    infoIcon="lucide:code-2"
+  >
+    <section class="py-4">
+      <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+        <Icon name="lucide:star" class="w-6 h-6 text-primary" />
+        <span>代表作品待补充</span>
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {
+          [
+            {
+              name: "项目一待补充",
+              desc: "这里可以写项目用途、技术栈、解决的问题和你的职责。",
+            },
+            {
+              name: "项目二待补充",
+              desc: "这里可以写另一个作品，也可以是课程作业或个人练习。",
+            },
+            {
+              name: "项目三待补充",
+              desc: "如果暂时没有项目，可以先用这块作为后续预留位置。",
+            },
+            {
+              name: "项目四待补充",
+              desc: "你也可以在这里放网站、应用、脚本或设计作品。",
+            },
+          ].map((project) => (
+            <div class="card bg-base-200 p-6">
+              <h3 class="text-xl font-bold mb-2">{project.name}</h3>
+              <p class="text-base-content/80">{project.desc}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="py-4">
+      <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+        <Icon name="lucide:folder" class="w-6 h-6 text-primary" />
+        <span>项目标签待补充</span>
+      </h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {
+          [
+            "前端项目待补充",
+            "工具脚本待补充",
+            "学习练习待补充",
+            "开源协作待补充",
+            "设计尝试待补充",
+            "其他内容待补充",
+          ].map((label) => (
+            <div class="card bg-base-200 p-5">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Icon name="lucide:tag" class="w-5 h-5 text-primary" />
+                </div>
+                <h3 class="font-bold">{label}</h3>
+              </div>
+              <p class="text-base-content/80">这里可以补充对应类别的项目说明、链接或截图。</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="py-4">
+      <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+        <Icon name="lucide:git-pull-request" class="w-6 h-6 text-primary" />
+        <span>协作经历待补充</span>
+      </h2>
+
+      <div class="card bg-base-200 p-6">
+        <ul class="space-y-5">
+          {
+            [
+              {
+                project: "协作方向 1 待补充",
+                description: "这里可以写你参与过的协作、贡献或团队项目。",
+              },
+              {
+                project: "协作方向 2 待补充",
+                description: "这里可以写你在项目中的角色、负责模块和产出。",
+              },
+              {
+                project: "协作方向 3 待补充",
+                description: "如果暂时没有协作经历，也可以先留作占位。",
+              },
+            ].map((contrib) => (
+              <li class="flex items-start gap-4">
+                <div class="flex-shrink-0 bg-base-300 p-2 rounded-full">
+                  <Icon name="lucide:git-commit" class="w-6 h-6 text-primary" />
+                </div>
+                <div>
+                  <h3 class="text-lg font-bold">{contrib.project}</h3>
+                  <p class="text-base-content/80">{contrib.description}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+  </MainCard>
+</BaseLayout>

@@ -1,0 +1,99 @@
+---
+import { Icon } from "astro-icon/components";
+import MainCard from "@/components/MainCard.astro";
+import FeatureCard from "@/components/mdx/FeatureCard.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="首页">
+  <MainCard
+    title="Welcome to Mo_Han136"
+    description="这里展示我的个人简介、作品方向和联系方式。"
+    image="/home.jpg"
+    infoIcon="lucide:info"
+  >
+    <div class="space-y-8">
+      <section class="py-6">
+        <div class="flex flex-col items-center text-center">
+          <h1
+            class="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent leading-loose"
+          >
+            你好，我是Mo_Han136
+          </h1>
+          <p class="text-xl text-base-content/80 max-w-3xl mb-8">
+            这里是我的个人主页，后续可以补充个人简介、擅长方向、项目作品、写作内容和联系方式。
+          </p>
+          <div class="flex flex-wrap gap-4 justify-center">
+            <a href="/about" class="btn btn-primary gap-2 btn-shine-effect">
+              <Icon name="lucide:user" class="w-5 h-5" />
+              <span>关于</span>
+            </a>
+            <a href="/project" class="btn btn-outline gap-2">
+              <Icon name="lucide:folder" class="w-5 h-5" />
+              <span>作品</span>
+            </a>
+            <a href="https://github.com/GoudoMahan" target="_blank" class="btn btn-outline gap-2">
+              <Icon name="ri:github-line" class="w-5 h-5" />
+              <span>GitHub</span>
+            </a>
+            <a href="https://space.bilibili.com/" target="_blank" class="btn btn-outline gap-2">
+              <Icon name="ri:bilibili-line" class="w-5 h-5" />
+              <span>Bilibili</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="py-6">
+        <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+          <Icon name="lucide:sparkles" class="w-6 h-6 text-primary" />
+          <span>主页内容区块</span>
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <FeatureCard
+            title="个人简介待补充"
+            description="这里可以写你的身份标签、日常关注方向和一句话介绍。"
+            icon="lucide:smartphone"
+            color="oklch(0.7 0.2 30)"
+          />
+
+          <FeatureCard
+            title="技术栈待补充"
+            description="这里可以列出你常用的语言、框架、工具和擅长领域。"
+            icon="lucide:moon"
+            color="oklch(0.65 0.2 280)"
+          />
+
+          <FeatureCard
+            title="项目作品待补充"
+            description="这里可以展示做过的项目、课程作业、练习作品或者开源仓库。"
+            icon="lucide:file-code"
+            color="oklch(0.6 0.2 160)"
+          />
+
+          <FeatureCard
+            title="文章记录待补充"
+            description="这里可以写博客、笔记、学习总结或者灵感整理。"
+            icon="lucide:search"
+            color="oklch(0.6 0.2 200)"
+          />
+
+          <FeatureCard
+            title="联系方式待补充"
+            description="这里可以补充邮箱、社交账号、公众号或其他联系入口。"
+            icon="lucide:zap"
+            color="oklch(0.8 0.2 80)"
+          />
+
+          <FeatureCard
+            title="更多内容待补充"
+            description="这里可以补充时间线、荣誉、兴趣爱好或者正在进行的计划。"
+            icon="lucide:palette"
+            color="oklch(0.7 0.2 10)"
+          />
+        </div>
+      </section>
+    </div>
+  </MainCard>
+</BaseLayout>

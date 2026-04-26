@@ -1,0 +1,138 @@
+---
+import { Icon } from "astro-icon/components";
+import MainCard from "@/components/MainCard.astro";
+import FriendCard from "@/components/mdx/FriendCard.astro";
+import LinkCard from "@/components/mdx/LinkCard.astro";
+import Showcase from "@/components/mdx/Showcase.astro";
+import Card from "@/components/temple/Card.astro";
+import CardGroup from "@/components/temple/CardGroup.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const sites = [{ name: "待补充站点", url: "https://example.com/" }];
+---
+
+<BaseLayout title="友链">
+  <CardGroup cols="1">
+    <MainCard
+      title="友链"
+      description="这里可以整理朋友站点、常用链接和参考资源，当前未确认的内容已用中文占位。"
+      image="/friend.jpg"
+      infoIcon="lucide:link"
+    >
+      <div class="space-y-10">
+        <section>
+          <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+            <Icon name="lucide:users" class="w-6 h-6 text-primary" />
+            <span>朋友</span>
+          </h2>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <FriendCard
+              name="Ri_Nai"
+              avatar="https://github.com/Ri-Nai.png"
+              description="日奈"
+              url="https://ri-nai.github.io/"
+              type="friend"
+            />
+            <FriendCard
+              name="vegetablefj"
+              avatar="https://github.com/vegetablefj.png"
+              description="傅杰"
+              url="https://fujiemath.com/"
+              type="friend"
+            />
+            <FriendCard
+              name="朋友 C 待补充"
+              avatar="https://github.com/朋友C.png"
+              description="这里可以继续补充第三位朋友的信息。"
+              url="https://github.com/朋友C"
+              type="friend"
+            />
+          </div>
+        </section>
+
+        <section>
+          <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+            <Icon name="lucide:bookmark" class="w-6 h-6 text-primary" />
+            <span>常用资源（待补充）</span>
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <LinkCard
+              title="Astro Documentation"
+              desc="Astro 的官方文档，适合后续放到资源页里。"
+              url="https://docs.astro.build"
+              icon="simple-icons:astro"
+              categories={["Docs", "Learning", "Reference"]}
+            />
+
+            <LinkCard
+              title="Tailwind CSS Documentation"
+              desc="Tailwind CSS 官方文档，适合保留为常用参考。"
+              url="https://tailwindcss.com/docs"
+              icon="simple-icons:tailwindcss"
+              categories={["Docs", "CSS", "Reference"]}
+            />
+
+            <LinkCard
+              title="DaisyUI Components"
+              desc="DaisyUI 组件文档，便于后续继续调整样式。"
+              url="https://daisyui.com/components/"
+              icon="simple-icons:daisyui"
+              categories={["Components", "UI", "Reference"]}
+            />
+
+            <LinkCard
+              title="TypeScript Handbook"
+              desc="TypeScript 官方手册，适合学习和查询语法。"
+              url="https://www.typescriptlang.org/docs/handbook/intro.html"
+              icon="simple-icons:typescript"
+              categories={["Docs", "TypeScript", "Reference"]}
+            />
+          </div>
+        </section>
+
+        <div class="divider my-8">
+          <Icon name="lucide:heart" class="w-10 h-10 text-primary" />
+        </div>
+
+        <div class="text-center">
+          <p class="text-base-content/80 mb-4">如果你想把这里改成完整的友情链接页，可以继续补充站点名单和说明。</p>
+          <a href="/about" class="btn btn-primary gap-2">
+            <Icon name="lucide:user" class="w-5 h-5" />
+            <span>返回“关于“</span>
+          </a>
+        </div>
+      </div>
+    </MainCard>
+    <Card>
+      <div class="p-4 sm:p-6">
+        <div class="space-y-10">
+          <section>
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-2">
+              <h2 class="text-2xl font-bold flex items-center gap-2">
+                <Icon name="lucide:layout-template" class="w-6 h-6 text-primary" />
+                <span>待补充站点</span>
+              </h2>
+              <a
+                href="https://example.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-sm btn-outline btn-primary gap-2"
+              >
+                <Icon name="lucide:plus-circle" class="w-4 h-4" />
+                补充站点
+              </a>
+            </div>
+            <p class="text-base-content/70 mb-6">
+              这里可以放你想公开展示的站点列表、个人作品站点或朋友主页，当前仅保留一个占位项。
+            </p>
+            <div class="flex flex-wrap items-center gap-3">
+              {sites.map((site) => <Showcase name={site.name} url={site.url} />)}
+            </div>
+          </section>
+        </div>
+      </div>
+    </Card>
+  </CardGroup>
+</BaseLayout>

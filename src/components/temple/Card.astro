@@ -1,0 +1,9 @@
+---
+import type { CardProps } from "@interfaces/data";
+
+const { class: className = "" } = Astro.props as CardProps;
+---
+
+<div class={`bg-base-100/85 backdrop-blur-md rounded-xl shadow-lg w-full ${className}`}>
+  <slot />
+</div>
