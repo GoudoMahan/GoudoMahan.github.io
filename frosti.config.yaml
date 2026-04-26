@@ -37,7 +37,7 @@ site:
         - id: documentation
           text: Blog
           href: /blog/category/Blog
-          svg: "material-symbols:unknown-document-outline-rounded"
+          svg: "material-symbols:news"
           target: _self
         - id: examples
           text: Examples

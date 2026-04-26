@@ -8,7 +8,7 @@ tags:
   - Markdown
   - LaTeX
   - Mathematics
-badge: LaTeX
+
 ---
 This document serves as a test for rendering mathematical formulas in Markdown using `$$` delimiters.
 
