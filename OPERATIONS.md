@@ -169,7 +169,7 @@ pnpm run build
 git status
 git add .
 git commit -m "Update homepage and blog"
-git push origin main
+git push -u --force origin main
 ```
 
 推送后，GitHub 会自动执行：

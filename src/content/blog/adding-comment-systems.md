@@ -4,14 +4,13 @@ description: A comprehensive guide on how to integrate the Waline comment system
 pubDate: 04 15 2025
 image: /image/image4.jpg
 categories:
-  - Documentation
+  - Examples
 tags:
   - Frosti
   - Comments
   - Waline
   - Astro
 ---
-
 ## Introduction
 
 One of the essential features of any blog is the ability for readers to engage with your content through comments. While Frosti provides an excellent foundation for your Astro-based blog, adding a comment system requires a few additional steps. This guide will walk you through integrating the Waline comment system into your Frosti blog.
