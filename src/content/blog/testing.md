@@ -7,7 +7,6 @@ categories:
   - Blog
 tags:
   - blog
-badge: A
 ---
 # 博客第一篇文章测试
 
@@ -227,14 +226,14 @@ Most <mark>salamanders</mark> are nocturnal, and hunt for insects, worms, and ot
 
 #### Output
 
-<abbr title="Graphics Interchange Format"> GIF </abbr> is a bitmap image format.
+`<abbr title="Graphics Interchange Format">` GIF `</abbr>` is a bitmap image format.
 
-H <sub> 2 </sub>O
+H `<sub>` 2 `</sub>`O
 
-X <sup> n </sup> + Y <sup> n </sup> = Z <sup> n </sup>
+X `<sup>` n `</sup>` + Y `<sup>` n `</sup>` = Z `<sup>` n `</sup>`
 
-Press <kbd> CTRL </kbd>+<kbd> ALT </kbd>+<kbd> Delete </kbd> to end the session.
+Press `<kbd>` CTRL `</kbd>`+`<kbd>` ALT `</kbd>`+`<kbd>` Delete `</kbd>` to end the session.
 
-Most <mark> salamanders </mark> are nocturnal, and hunt for insects, worms, and other small creatures.
+Most `<mark>` salamanders `</mark>` are nocturnal, and hunt for insects, worms, and other small creatures.
 
 <iframe width="100%" height="500" src="https://player.bilibili.com/player.html?bvid=BV1QbchzoEni&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
