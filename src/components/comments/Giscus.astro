@@ -1,0 +1,86 @@
+---
+interface Props {
+  repo?: string;
+  repoId?: string;
+  category?: string;
+  categoryId?: string;
+  mapping?: string;
+  reactionsEnabled?: string;
+  emitMetadata?: string;
+  inputPosition?: string;
+  lang?: string;
+  loading?: string;
+}
+
+const {
+  repo = import.meta.env.GISCUS_REPO || "",
+  repoId = import.meta.env.GISCUS_REPO_ID || "",
+  category = import.meta.env.GISCUS_CATEGORY || "Announcements",
+  categoryId = import.meta.env.GISCUS_CATEGORY_ID || "",
+  mapping = "pathname",
+  reactionsEnabled = "1",
+  emitMetadata = "0",
+  inputPosition = "bottom",
+  lang = "zh-CN",
+  loading = "lazy",
+} = Astro.props;
+
+const isConfigured = repo && repoId && categoryId;
+---
+
+{
+  isConfigured ? (
+    <div class="mt-10 giscus-container">
+      <script
+        src="https://giscus.app/client.js"
+        data-repo={repo}
+        data-repo-id={repoId}
+        data-category={category}
+        data-category-id={categoryId}
+        data-mapping={mapping}
+        data-reactions-enabled={reactionsEnabled}
+        data-emit-metadata={emitMetadata}
+        data-input-position={inputPosition}
+        data-theme="preferred_color_scheme"
+        data-lang={lang}
+        data-loading={loading}
+        crossorigin="anonymous"
+        async
+      >
+      </script>
+    </div>
+  ) : (
+    <div class="mt-10 text-center py-8 text-base-content/60">
+      <p class="mb-2">💬 Giscus 评论服务未配置</p>
+      <div class="text-sm">
+        <p>请在 <code class="bg-base-300 px-2 py-1 rounded">.env</code> 文件中设置以下环境变量：</p>
+        <div class="mockup-code mt-4 text-left text-xs max-w-md mx-auto">
+          <pre><code>GISCUS_REPO=GoudoMahan/GoudoMahan.github.io</code></pre>
+          <pre><code>GISCUS_REPO_ID=你的仓库ID</code></pre>
+          <pre><code>GISCUS_CATEGORY=Announcements</code></pre>
+          <pre><code>GISCUS_CATEGORY_ID=你的分类ID</code></pre>
+        </div>
+        <p class="mt-4">
+          获取配置：<a href="https://giscus.app/zh-CN" target="_blank" class="link link-primary">giscus.app</a>
+        </p>
+      </div>
+    </div>
+  )
+}
+
+<style>
+  .giscus-container {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .giscus-container:global(.giscus) {
+    color-scheme: light dark;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .giscus-container {
+      --color-border-default: var(--b3);
+    }
+  }
+</style>

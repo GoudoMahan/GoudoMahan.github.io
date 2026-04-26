@@ -1,12 +1,12 @@
 ---
-title: "测试"
+title: "博客第一篇文章测试"
 description: "博客第一次搭建测试文章上传"
 pubDate: "Apr 26 2026"
 image: /image/testing_1.jpeg
 categories:
   - Blog
 tags:
-  - blog
+  - Blog
 ---
 # 博客第一篇文章测试
 

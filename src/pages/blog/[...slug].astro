@@ -3,6 +3,7 @@ import { type CollectionEntry, getCollection } from "astro:content";
 import License from "@components/widgets/License.astro";
 import PostFilter from "@components/widgets/PostFilter.astro";
 import PostInfo from "@components/widgets/PostInfo.astro";
+import Giscus from "@components/comments/Giscus.astro";
 import { DATE_FORMAT } from "@config";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import dayjs from "@utils/dayjs";
@@ -67,6 +68,12 @@ const url = new URL(`/blog/${blog.slug}`, Astro.url.origin);
           word={remarkPluginFrontmatter.totalCharCount}
           time={remarkPluginFrontmatter.readingTime}
         />
+
+        <div class="divider my-8">
+          <span class="text-lg font-bold">💬 评论区</span>
+        </div>
+
+        <Giscus />
       </div>
     </div>
   </MainCard>
