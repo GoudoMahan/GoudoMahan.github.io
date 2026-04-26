@@ -35,12 +35,12 @@ site:
           svg: "material-symbols:ink-pen-outline-rounded"
           target: _self
         - id: documentation
-          text: 文档
-          href: /blog/category/Documentation
+          text: Blog
+          href: /blog/category/Blog
           svg: "material-symbols:unknown-document-outline-rounded"
           target: _self
         - id: examples
-          text: 示例
+          text: Examples
           href: /blog/category/Examples
           svg: "material-symbols:deployed-code-outline"
           target: _self
