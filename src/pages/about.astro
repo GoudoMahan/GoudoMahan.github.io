@@ -47,7 +47,10 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
           </div>
 
           <p class="text-base-content/80">
-            这里可以写一段更完整的自我介绍，比如你是谁、在做什么、喜欢什么、近期在关注什么，以及希望别人如何认识你。
+            上海交通大学 - 机械与动力工程学院 - 23级本科生在读 <br />
+            前OIer，前ACMer <br />
+            F1新车迷，邦邦新手，喜欢在b站做低创视频 <br />
+            <!-- 这里可以写一段更完整的自我介绍，比如你是谁、在做什么、喜欢什么、近期在关注什么，以及希望别人如何认识你。 -->
           </p>
         </div>
       </section>
@@ -77,24 +80,28 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
       <section>
         <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
           <Icon name="lucide:code-2" class="w-6 h-6 text-primary" />
-          <span>技能栈待补充</span>
+          <span>技能栈</span>
         </h2>
 
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {
             [
-              { name: "前端待补充", icon: "simple-icons:astro", color: "oklch(0.5 0.2 300)" },
-              { name: "JavaScript 待补充", icon: "simple-icons:javascript", color: "oklch(0.8 0.2 80)" },
-              { name: "TypeScript 待补充", icon: "simple-icons:typescript", color: "oklch(0.6 0.2 250)" },
-              { name: "React 待补充", icon: "simple-icons:react", color: "oklch(0.7 0.2 200)" },
-              { name: "Node.js 待补充", icon: "simple-icons:nodedotjs", color: "oklch(0.7 0.2 140)" },
-              { name: "TailwindCSS 待补充", icon: "simple-icons:tailwindcss", color: "oklch(0.6 0.2 220)" },
-              { name: "HTML / CSS 待补充", icon: "simple-icons:html5", color: "oklch(0.7 0.2 30)" },
-              { name: "Git 待补充", icon: "simple-icons:git", color: "oklch(0.7 0.2 30)" },
-              { name: "数据库待补充", icon: "simple-icons:postgresql", color: "oklch(0.6 0.2 240)" },
-              { name: "工具链待补充", icon: "lucide:settings-2", color: "oklch(0.6 0.2 160)" },
-              { name: "写作待补充", icon: "lucide:notebook-text", color: "oklch(0.7 0.2 250)" },
-              { name: "其它待补充", icon: "lucide:more-horizontal", color: "oklch(0.65 0.15 20)" },
+              { name: "C++", icon: "simple-icons:cplusplus", color: "oklch(0.5 0.2 240)" },
+              { name: "Python", icon: "simple-icons:python", color: "oklch(0.7 0.2 130)" },
+              { name: "SolidWorks", icon: "lucide:box", color: "oklch(0.6 0.25 25)" },
+              { name: "MATLAB", icon: "lucide:calculator", color: "oklch(0.7 0.2 50)" },
+              // { name: "前端待补充", icon: "simple-icons:astro", color: "oklch(0.5 0.2 300)" },
+              // { name: "JavaScript 待补充", icon: "simple-icons:javascript", color: "oklch(0.8 0.2 80)" },
+              // { name: "TypeScript 待补充", icon: "simple-icons:typescript", color: "oklch(0.6 0.2 250)" },
+              // { name: "React 待补充", icon: "simple-icons:react", color: "oklch(0.7 0.2 200)" },
+              // { name: "Node.js 待补充", icon: "simple-icons:nodedotjs", color: "oklch(0.7 0.2 140)" },
+              // { name: "TailwindCSS 待补充", icon: "simple-icons:tailwindcss", color: "oklch(0.6 0.2 220)" },
+              // { name: "HTML / CSS 待补充", icon: "simple-icons:html5", color: "oklch(0.7 0.2 30)" },
+              // { name: "Git 待补充", icon: "simple-icons:git", color: "oklch(0.7 0.2 30)" },
+              // { name: "数据库待补充", icon: "simple-icons:postgresql", color: "oklch(0.6 0.2 240)" },
+              // { name: "工具链待补充", icon: "lucide:settings-2", color: "oklch(0.6 0.2 160)" },
+              // { name: "写作待补充", icon: "lucide:notebook-text", color: "oklch(0.7 0.2 250)" },
+              // { name: "其它待补充", icon: "lucide:more-horizontal", color: "oklch(0.65 0.15 20)" },
             ].map((tech) => (
               <div class="flex flex-col items-center justify-center p-4 bg-base-200 rounded-lg hover:bg-base-300 transition-colors">
                 <div class="text-3xl mb-2" style={`color: ${tech.color}`}>
@@ -119,23 +126,18 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
               [
                 {
                   date: "时间待补充",
-                  title: "经历 1 待补充",
-                  desc: "这里可以写你的第一段重要经历、学习阶段或项目开始时间。",
-                },
-                {
-                  date: "时间待补充",
-                  title: "经历 2 待补充",
-                  desc: "这里可以写你的第二段经历、作品发布或阶段性成果。",
-                },
-                {
-                  date: "时间待补充",
                   title: "经历 3 待补充",
                   desc: "这里可以写你当前正在进行的事情或下一步计划。",
                 },
                 {
-                  date: "时间待补充",
-                  title: "经历 4 待补充",
-                  desc: "这里可以继续补充更细的时间节点。",
+                  date: "2023-至今",
+                  title: "大学时期，ACM竞赛",
+                  desc: "2025 CCPC 北京市赛 金奖\n2024 ICPC EC-Final 银奖\n2024 ICPC 上海 金奖\n2024 ICPC 昆明 银奖\n2024 CCPC 重庆 金奖\n2023 ICPC 杭州 金奖\n2023 ICPC 合肥 金奖\n2023 CCPC 桂林 银奖",
+                },
+                {
+                  date: "2017-2023",
+                  title: "中学时期，OI竞赛",
+                  desc: "2021 NOIP 一等奖\n2021 CSP-S 一等奖\n2021 WC 银牌\n2020 NOIP 一等奖\n2020 CSP-S 一等奖\n2019 CSP-S 一等奖\n2019 CSP-J 一等奖",
                 },
               ].map((item, i) => (
                 <div class="relative flex gap-4 pb-2 md:pb-0 md:min-w-[250px]">
@@ -148,7 +150,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
                   <div>
                     <div class="text-sm text-base-content/60 mb-1">{item.date}</div>
                     <h3 class="text-lg font-bold">{item.title}</h3>
-                    <p class="text-base-content/80 mt-1">{item.desc}</p>
+                    <p class="text-base-content/80 mt-1 whitespace-pre-line">{item.desc}</p>
                   </div>
                 </div>
               ))

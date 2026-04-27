@@ -35,8 +35,8 @@ site:
           svg: "material-symbols:ink-pen-outline-rounded"
           target: _self
         - id: documentation
-          text: Blog
-          href: /blog/category/Blog
+          text: 随记
+          href: /blog/category/随记
           svg: "material-symbols:news"
           target: _self
         - id: examples
