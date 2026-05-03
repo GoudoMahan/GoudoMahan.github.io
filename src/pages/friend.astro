@@ -15,7 +15,7 @@ const sites = [{ name: "待补充站点", url: "https://example.com/" }];
   <CardGroup cols="1">
     <MainCard
       title="友链"
-      description="这里可以整理朋友站点、常用链接和参考资源，当前未确认的内容已用中文占位。"
+      description=""
       image="/friend.jpg"
       infoIcon="lucide:link"
     >
@@ -41,17 +41,17 @@ const sites = [{ name: "待补充站点", url: "https://example.com/" }];
               url="https://fujiemath.com/"
               type="friend"
             />
-            <FriendCard
+            <!-- <FriendCard
               name="朋友 C 待补充"
               avatar="https://github.com/朋友C.png"
               description="这里可以继续补充第三位朋友的信息。"
               url="https://github.com/朋友C"
               type="friend"
-            />
+            /> -->
           </div>
         </section>
 
-        <section>
+        <!-- <section>
           <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
             <Icon name="lucide:bookmark" class="w-6 h-6 text-primary" />
             <span>常用资源（待补充）</span>
@@ -90,22 +90,16 @@ const sites = [{ name: "待补充站点", url: "https://example.com/" }];
               categories={["Docs", "TypeScript", "Reference"]}
             />
           </div>
-        </section>
+        </section> -->
 
         <div class="divider my-8">
           <Icon name="lucide:heart" class="w-10 h-10 text-primary" />
         </div>
 
-        <div class="text-center">
-          <p class="text-base-content/80 mb-4">如果你想把这里改成完整的友情链接页，可以继续补充站点名单和说明。</p>
-          <a href="/about" class="btn btn-primary gap-2">
-            <Icon name="lucide:user" class="w-5 h-5" />
-            <span>返回“关于“</span>
-          </a>
-        </div>
+        
       </div>
     </MainCard>
-    <Card>
+    <!-- <Card>
       <div class="p-4 sm:p-6">
         <div class="space-y-10">
           <section>
@@ -133,6 +127,6 @@ const sites = [{ name: "待补充站点", url: "https://example.com/" }];
           </section>
         </div>
       </div>
-    </Card>
+    </Card> -->
   </CardGroup>
 </BaseLayout>

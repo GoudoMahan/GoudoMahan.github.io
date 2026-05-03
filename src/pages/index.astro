@@ -3,12 +3,13 @@ import { Icon } from "astro-icon/components";
 import MainCard from "@/components/MainCard.astro";
 import FeatureCard from "@/components/mdx/FeatureCard.astro";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import LinkCard from "@/components/mdx/LinkCard.astro";
 ---
 
 <BaseLayout title="首页">
   <MainCard
     title="Welcome to Mo_Han136"
-    description="这里展示我的个人简介、作品方向和联系方式。"
+    description=""
     image="/home.jpg"
     infoIcon="lucide:info"
   >
@@ -21,7 +22,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
             你好，我是Mo_Han136
           </h1>
           <p class="text-xl text-base-content/80 max-w-3xl mb-8">
-            这里是我的个人主页，后续可以补充个人简介、擅长方向、项目作品、写作内容和联系方式。
+            上海交通大学 - 机械与动力工程学院 - 机械工程专业 - 23级本科生在读
             <br />
           </p>
           <div class="flex flex-wrap gap-4 justify-center">
@@ -48,52 +49,48 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
       <section class="py-6">
         <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
           <Icon name="lucide:sparkles" class="w-6 h-6 text-primary" />
-          <span>主页内容区块</span>
+          <span>常用链接</span>
         </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <LinkCard
+              title="Bilibili Space"
+              desc="我的Bilibili空间"
+              url="https://space.bilibili.com/475480857"
+              img="/public/bilibili.jpg"
+              categories={["Bilibili", "Homepage", "Share"]}
+            />
+            <LinkCard
+              title="Github Space"
+              desc="我的Github空间"
+              url="https://github.com/GoudoMahan"
+              img="/public/profile.png"
+              categories={["Github", "Homepage", "Share"]}
+            />
+            <LinkCard
+              title="F1"
+              desc="formula1"
+              url="https://www.formula1.com/"
+              img="/public/f1.png"
+              categories={["F1", "Interest"]}
+            />
+            <LinkCard
+              title="马莎F1"
+              desc="主播主播，什么是undercut什么是overcut？"
+              url="https://msf1.cn/"
+              img="/public/msf1.jpg"
+              categories={["F1", "Interest", "Share"]}
+            />
+            <!-- <LinkCard
+              title="Tailwind CSS Documentation"              //卡片标题
+              desc="Tailwind CSS 官方文档，适合保留为常用参考。"   //卡片描述文本
+              url="https://tailwindcss.com/docs"              //卡片链接
+              img                                             //左侧显示的图片地址
+              icon="simple-icons:tailwindcss"                 //无图片时显示的图标
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <FeatureCard
-            title="个人简介待补充"
-            description="这里可以写你的身份标签、日常关注方向和一句话介绍。"
-            icon="lucide:smartphone"
-            color="oklch(0.7 0.2 30)"
-          />
-
-          <FeatureCard
-            title="技术栈待补充"
-            description="这里可以列出你常用的语言、框架、工具和擅长领域。"
-            icon="lucide:moon"
-            color="oklch(0.65 0.2 280)"
-          />
-
-          <FeatureCard
-            title="项目作品待补充"
-            description="这里可以展示做过的项目、课程作业、练习作品或者开源仓库。"
-            icon="lucide:file-code"
-            color="oklch(0.6 0.2 160)"
-          />
-
-          <FeatureCard
-            title="文章记录待补充"
-            description="这里可以写博客、笔记、学习总结或者灵感整理。"
-            icon="lucide:search"
-            color="oklch(0.6 0.2 200)"
-          />
-
-          <FeatureCard
-            title="联系方式待补充"
-            description="这里可以补充邮箱、社交账号、公众号或其他联系入口。"
-            icon="lucide:zap"
-            color="oklch(0.8 0.2 80)"
-          />
-
-          <FeatureCard
-            title="更多内容待补充"
-            description="这里可以补充时间线、荣誉、兴趣爱好或者正在进行的计划。"
-            icon="lucide:palette"
-            color="oklch(0.7 0.2 10)"
-          />
-        </div>
+              categories={["Docs", "CSS", "Reference"]}        //卡片分类
+            /> -->
+          </div>
+    
       </section>
     </div>
   </MainCard>

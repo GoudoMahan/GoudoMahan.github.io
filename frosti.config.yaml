@@ -39,6 +39,11 @@ site:
           href: /blog/category/随记
           svg: "material-symbols:news"
           target: _self
+        - id: documentation
+          text: 学习笔记
+          href: /blog/category/学习笔记 
+          svg: "material-symbols:stylus-note"
+          target: _self
         - id: examples
           text: Examples
           href: /blog/category/Examples
