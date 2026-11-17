@@ -1,172 +1,87 @@
 ---
+import { USER_AVATAR } from "@config";
 import { Icon } from "astro-icon/components";
 import MainCard from "@/components/MainCard.astro";
+import { about } from "@/content/site-pages.json";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 ---
 
-<BaseLayout title="关于">
-  <MainCard
-    title="关于Mo_Han136"
-    description=""
-    image="/about.jpg"
-    infoIcon="lucide:user"
-  >
+<BaseLayout title={about.title}>
+  <MainCard title={about.heading} image={about.image} infoIcon="lucide:user">
     <div class="space-y-10 mb-8">
       <section class="flex flex-col md:flex-row gap-8 items-center md:items-start">
         <div class="avatar">
           <div class="w-32 h-32 md:w-40 md:h-40 rounded-xl ring ring-primary ring-offset-base-100 ring-offset-2 overflow-hidden">
-            <img src="/profile.png" alt="头像" width="160" height="160" loading="eager" />
+            <img src={USER_AVATAR} alt="头像" width="160" height="160" loading="eager" />
           </div>
         </div>
-
         <div class="flex-1 text-center md:text-left">
-          <h1 class="text-3xl md:text-4xl font-bold mb-2">Mo_Han136</h1>
-          <p class="text-xl text-base-content/80 mb-4">上海交通大学-机械与动力工程学院-机械工程-23级本科生在读 </p>
-
+          <h1 class="text-3xl md:text-4xl font-bold mb-2">{about.name}</h1>
+          <p class="text-xl text-base-content/80 mb-4">{about.education}</p>
           <div class="flex flex-wrap gap-3 justify-center md:justify-start mb-6">
-            <a href="/project" class="btn btn-sm btn-outline gap-2">
-              <Icon name="lucide:folder" class="w-4 h-4" />
-              <span>作品</span>
-            </a>
-            <a href="/blog" class="btn btn-sm btn-outline gap-2">
-              <Icon name="lucide:book-open" class="w-4 h-4" />
-              <span>文章</span>
-            </a>
-            <a href="https://github.com/GoudoMahan" target="_blank" class="btn btn-sm btn-outline gap-2">
-              <Icon name="ri:github-line" class="w-4 h-4" />
-              <span>GitHub</span>
-            </a>
-            <a href="https://space.bilibili.com/" target="_blank" class="btn btn-sm btn-outline gap-2">
-              <Icon name="ri:bilibili-line" class="w-4 h-4" />
-              <span>Bilibili</span>
-            </a>
-            <a href="mailto:mohan136.davidhu@gmail.com" class="btn btn-sm btn-outline gap-2">
-              <Icon name="lucide:mail" class="w-4 h-4" />
-              <span>邮箱</span>
-            </a>
+            {about.actions.map((action) => (
+              <a href={action.href} target={action.target} rel={action.target === "_blank" ? "noopener noreferrer" : undefined} class="btn btn-sm btn-outline gap-2">
+                {action.icon && <Icon name={action.icon} class="w-4 h-4" aria-hidden="true" />}
+                <span>{action.label}</span>
+              </a>
+            ))}
           </div>
-
-          <p class="text-base-content/80">
-            前OIer，前ACMer <br />
-            F1新车迷，邦邦新手，喜欢在b站做低创视频 <br />
-            <!-- 这里可以写一段更完整的自我介绍，比如你是谁、在做什么、喜欢什么、近期在关注什么，以及希望别人如何认识你。 -->
-          </p>
+          <p class="whitespace-pre-line text-base-content/80">{about.bio}</p>
         </div>
       </section>
 
       <section>
         <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-          <Icon name="lucide:brain-circuit" class="w-6 h-6 text-primary" />
-          <span>个人关键词</span>
+          <Icon name="lucide:brain-circuit" class="w-6 h-6 text-primary" aria-hidden="true" />
+          <span>{about.keywordsTitle}</span>
         </h2>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div class="card bg-base-200 p-5">
-            <h3 class="font-bold mb-2">方向</h3>
-            <p class="text-base-content/80">
-              （待定）
-            </p>
-          </div>
-          <div class="card bg-base-200 p-5">
-            <h3 class="font-bold mb-2">兴趣</h3>
-            <p class="text-base-content/80">
-              F1（已电动）<br />
-              BanGDream（已取消）<br />
-              GTA（已疲倦）<br />
-              番剧（已疲倦）<br />
-              LoveLive（已半退坑）<br />
-              音游（已退坑）<br />
-            </p>
-          </div>
-          <div class="card bg-base-200 p-5">
-            <h3 class="font-bold mb-2">目标</h3>
-            <p class="text-base-content/80">
-              备战保研ing...<br />
-              备战暑期实习ing...<br />
-            </p>
-          </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {about.keywords.map((keyword) => (
+            <div class="card bg-base-200 p-5">
+              <h3 class="font-bold mb-2">{keyword.title}</h3>
+              <p class="whitespace-pre-line text-base-content/80">{keyword.text}</p>
+            </div>
+          ))}
         </div>
       </section>
 
       <section>
         <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-          <Icon name="lucide:code-2" class="w-6 h-6 text-primary" />
-          <span>技能栈</span>
+          <Icon name="lucide:code-2" class="w-6 h-6 text-primary" aria-hidden="true" />
+          <span>{about.skillsTitle}</span>
         </h2>
-
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-          {
-            [
-              { name: "C++", icon: "simple-icons:cplusplus", color: "oklch(0.5 0.2 240)" },
-              { name: "Python", icon: "simple-icons:python", color: "oklch(0.7 0.2 130)" },
-              { name: "SolidWorks", icon: "lucide:box", color: "oklch(0.6 0.25 25)" },
-              { name: "MATLAB", icon: "lucide:calculator", color: "oklch(0.7 0.2 50)" },
-              // { name: "前端待补充", icon: "simple-icons:astro", color: "oklch(0.5 0.2 300)" },
-              // { name: "JavaScript 待补充", icon: "simple-icons:javascript", color: "oklch(0.8 0.2 80)" },
-              // { name: "TypeScript 待补充", icon: "simple-icons:typescript", color: "oklch(0.6 0.2 250)" },
-              // { name: "React 待补充", icon: "simple-icons:react", color: "oklch(0.7 0.2 200)" },
-              // { name: "Node.js 待补充", icon: "simple-icons:nodedotjs", color: "oklch(0.7 0.2 140)" },
-              // { name: "TailwindCSS 待补充", icon: "simple-icons:tailwindcss", color: "oklch(0.6 0.2 220)" },
-              // { name: "HTML / CSS 待补充", icon: "simple-icons:html5", color: "oklch(0.7 0.2 30)" },
-              // { name: "Git 待补充", icon: "simple-icons:git", color: "oklch(0.7 0.2 30)" },
-              // { name: "数据库待补充", icon: "simple-icons:postgresql", color: "oklch(0.6 0.2 240)" },
-              // { name: "工具链待补充", icon: "lucide:settings-2", color: "oklch(0.6 0.2 160)" },
-              // { name: "写作待补充", icon: "lucide:notebook-text", color: "oklch(0.7 0.2 250)" },
-              // { name: "其它待补充", icon: "lucide:more-horizontal", color: "oklch(0.65 0.15 20)" },
-            ].map((tech) => (
-              <div class="flex flex-col items-center justify-center p-4 bg-base-200 rounded-lg hover:bg-base-300 transition-colors">
-                <div class="text-3xl mb-2" style={`color: ${tech.color}`}>
-                  <Icon name={tech.icon} class="w-10 h-10" />
-                </div>
-                <span class="text-sm font-medium text-center">{tech.name}</span>
+          {about.skills.map((tech) => (
+            <div class="flex flex-col items-center justify-center p-4 bg-base-200 rounded-lg hover:bg-base-300 transition-colors">
+              <div class="mb-2 text-3xl" style={`color: ${tech.color}`}>
+                <Icon name={tech.icon} class="w-10 h-10" aria-hidden="true" />
               </div>
-            ))
-          }
+              <span class="text-sm font-medium text-center">{tech.name}</span>
+            </div>
+          ))}
         </div>
       </section>
 
-      <section>
-        <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-          <Icon name="lucide:activity" class="w-6 h-6 text-primary" />
-          <span>经历时间线</span>
+      <section aria-labelledby="competition-title">
+        <h2 id="competition-title" class="text-2xl font-bold mb-6 flex items-center gap-2">
+          <Icon name="lucide:trophy" class="w-6 h-6 text-primary" aria-hidden="true" />
+          <span>{about.competitionsTitle}</span>
         </h2>
-
-        <div class="bg-base-200 rounded-xl p-6 overflow-x-auto">
-          <div class="flex flex-col md:flex-row gap-8 md:gap-4 md:overflow-x-auto md:pb-2">
-            {
-              [
-                {
-                  date: "时间待补充",
-                  title: "经历 3 ",
-                  desc: "待补充",
-                },
-                {
-                  date: "2023-至今",
-                  title: "大学时期，ACM竞赛",
-                  desc: "2025 CCPC 北京市赛 金奖\n2024 ICPC EC-Final 银奖\n2024 ICPC 上海 金奖\n2024 ICPC 昆明 银奖\n2024 CCPC 重庆 金奖\n2023 ICPC 杭州 金奖\n2023 ICPC 合肥 金奖\n2023 CCPC 桂林 银奖",
-                },
-                {
-                  date: "2017-2023",
-                  title: "中学时期，OI竞赛",
-                  desc: "2021 NOIP 一等奖\n2021 CSP-S 一等奖\n2021 WC 银牌\n2020 NOIP 一等奖\n2020 CSP-S 一等奖\n2019 CSP-S 一等奖\n2019 CSP-J 一等奖",
-                },
-              ].map((item, i) => (
-                <div class="relative flex gap-4 pb-2 md:pb-0 md:min-w-[250px]">
-                  <div class="flex flex-col items-center">
-                    <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-primary-content text-xl">
-                      {i + 1}
-                    </div>
-                    <div class="w-0.5 h-16 bg-base-300 mt-2 md:hidden" />
-                  </div>
-                  <div>
-                    <div class="text-sm text-base-content/60 mb-1">{item.date}</div>
-                    <h3 class="text-lg font-bold">{item.title}</h3>
-                    <p class="text-base-content/80 mt-1 whitespace-pre-line">{item.desc}</p>
-                  </div>
-                </div>
-              ))
-            }
-          </div>
+        <div class="grid gap-4 xl:grid-cols-2 xl:items-start">
+          {about.competitions.map((period) => (
+            <section aria-labelledby={period.id} class="min-w-0 rounded-xl bg-base-200 px-4 py-5 sm:px-5">
+              <p class="text-sm text-base-content/70">{period.date}</p>
+              <h3 id={period.id} class="mt-1 text-lg font-bold">{period.title}</h3>
+              <ul class="mt-3 divide-y divide-base-content/10 border-t border-base-content/10 text-sm">
+                {period.results.map(([event, award]) => (
+                  <li class="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-3 py-2">
+                    <span>{event}</span>
+                    <span class="whitespace-nowrap text-right font-semibold">{award}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
         </div>
       </section>
     </div>

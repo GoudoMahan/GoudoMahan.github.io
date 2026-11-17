@@ -8,6 +8,7 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 import { generatePageLinks } from "@utils/blogUtils";
 import { getMainBlogPaginationPaths } from "@utils/paginationUtils";
 import { Icon } from "astro-icon/components";
+import { blog as blogPage } from "@/content/site-pages.json";
 
 export async function getStaticPaths({ paginate }: { paginate: any }) {
   return getMainBlogPaginationPaths({ paginate });
@@ -19,7 +20,7 @@ const totalPages = Math.ceil(page.total / page.size);
 const pageLinks = generatePageLinks(totalPages);
 ---
 
-<BaseLayout title="Blog">
+<BaseLayout title={blogPage.title}>
   <!-- Blog Navigation Cards -->
   <CardGroup cols="2">
     <!-- Archives Card -->

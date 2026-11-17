@@ -1,4 +1,5 @@
 ---
+import { type CollectionEntry, getCollection } from "astro:content";
 import Giscus from "@components/comments/Giscus.astro";
 import License from "@components/widgets/License.astro";
 import PostFilter from "@components/widgets/PostFilter.astro";
@@ -7,7 +8,6 @@ import { DATE_FORMAT } from "@config";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import dayjs from "@utils/dayjs";
 import MainCard from "@/components/MainCard.astro";
-import { type CollectionEntry, getCollection } from "astro:content";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");

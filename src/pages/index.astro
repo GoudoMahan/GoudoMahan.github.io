@@ -1,97 +1,193 @@
 ---
-import MainCard from "@/components/MainCard.astro";
-import FeatureCard from "@/components/mdx/FeatureCard.astro";
-import LinkCard from "@/components/mdx/LinkCard.astro";
-import BaseLayout from "@/layouts/BaseLayout.astro";
 import { Icon } from "astro-icon/components";
+import Card from "@/components/temple/Card.astro";
+import { projectGroups } from "@/content/projects";
+import { home } from "@/content/site-pages.json";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getAllPosts, sortPostsByDate } from "@/utils/blogUtils";
+
+const articles = sortPostsByDate(await getAllPosts())
+  .filter(
+    (post) => !post.data.draft && !post.data.categories?.includes("Examples"),
+  )
+  .slice(0, home.recentCount);
+const articleDate = new Intl.DateTimeFormat("en-CA", {
+  timeZone: "Asia/Shanghai",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
 ---
 
-<BaseLayout title="首页">
-  <MainCard
-    title="Welcome to Mo_Han136"
-    description=""
-    image="/home.jpg"
-    infoIcon="lucide:info"
-  >
-    <div class="space-y-8">
-      <section class="py-6">
-        <div class="flex flex-col items-center text-center">
-          <h1
-            class="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent leading-loose"
-          >
-            你好，我是Mo_Han136
-          </h1>
-          <p class="text-xl text-base-content/80 max-w-3xl mb-8">
-            上海交通大学 - 机械与动力工程学院 - 机械工程专业 - 23级本科生在读
-            <br />
-          </p>
-          <div class="flex flex-wrap gap-4 justify-center">
-            <a href="/about" class="btn btn-primary gap-2 btn-shine-effect">
-              <Icon name="lucide:user" class="w-5 h-5" />
-              <span>关于</span>
-            </a>
-            <a href="/project" class="btn btn-outline gap-2">
-              <Icon name="lucide:folder" class="w-5 h-5" />
-              <span>作品</span>
-            </a>
-            <a href="https://github.com/GoudoMahan" target="_blank" class="btn btn-outline gap-2">
-              <Icon name="ri:github-line" class="w-5 h-5" />
-              <span>GitHub</span>
-            </a>
-            <a href="https://space.bilibili.com/" target="_blank" class="btn btn-outline gap-2">
-              <Icon name="ri:bilibili-line" class="w-5 h-5" />
-              <span>Bilibili</span>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <section class="py-6">
-        <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-          <Icon name="lucide:sparkles" class="w-6 h-6 text-primary" />
-          <span>常用链接</span>
-        </h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <LinkCard
-              title="Bilibili Space"
-              desc="我的Bilibili空间"
-              url="https://space.bilibili.com/475480857"
-              img="/bilibili.jpg"
-              categories={["Bilibili", "Homepage", "Share"]}
-            />
-            <LinkCard
-              title="Github Space"
-              desc="我的Github空间"
-              url="https://github.com/GoudoMahan"
-              img="/profile.png"
-              categories={["Github", "Homepage", "Share"]}
-            />
-            <LinkCard
-              title="F1"
-              desc="formula1"
-              url="https://www.formula1.com/"
-              img="/f1.png"
-              categories={["F1", "Interest"]}
-            />
-            <LinkCard
-              title="马莎F1"
-              desc="主播主播，什么是undercut什么是overcut？"
-              url="https://msf1.cn/"
-              img="/msf1.jpg"
-              categories={["F1", "Interest", "Share"]}
-            />
-            <!-- <LinkCard
-              title="Tailwind CSS Documentation"              //卡片标题
-              desc="Tailwind CSS 官方文档，适合保留为常用参考。"   //卡片描述文本
-              url="https://tailwindcss.com/docs"              //卡片链接
-              img                                             //左侧显示的图片地址
-              icon="simple-icons:tailwindcss"                 //无图片时显示的图标
-
-              categories={["Docs", "CSS", "Reference"]}        //卡片分类
-            /> -->
-          </div>
-    
-      </section>
+<BaseLayout title={home.title} description={home.description} image={new URL(home.image, Astro.site).href}>
+  <section class="home-hero relative isolate overflow-hidden rounded-xl shadow-lg text-white" aria-labelledby="home-title">
+    <img
+      class="hero-image absolute inset-0 -z-20 h-full w-full object-cover"
+      src={home.image}
+      width="1440"
+      height="960"
+      fetchpriority="high"
+      alt=""
+    />
+    <div class="relative z-10 px-6 py-9 sm:px-9 sm:py-11 lg:px-10">
+      <p class="mb-3 text-sm font-semibold leading-relaxed text-slate-100">
+        {home.education}
+      </p>
+      <h1 id="home-title" class="hero-title break-words font-extrabold leading-none">{home.name}</h1>
+      <p class="mt-4 max-w-[28rem] text-sm leading-relaxed text-slate-100 sm:text-base">
+        {home.bio}
+      </p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        {home.actions.map((action, index) => (
+          <a href={action.href} class:list={["hero-action", index === 0 ? "hero-primary" : "hero-secondary"]}>
+            {action.icon && <Icon name={action.icon} class="h-4 w-4" aria-hidden="true" />}
+            {action.label}
+          </a>
+        ))}
+      </div>
     </div>
-  </MainCard>
+  </section>
+
+  {projectGroups.map((group) => (
+    <Card class="px-5 py-6 sm:px-8 sm:py-7">
+      <section aria-labelledby={`home-${group.id}`}>
+        <h2 id={`home-${group.id}`} class="mb-3 text-xl font-bold sm:text-2xl">{group.title}</h2>
+        <ul class="divide-y divide-base-content/10">
+          {group.items.map((project) => (
+            <li>
+              <a class="home-row" href={`/project/#${project.id}`}>
+                <span class="row-type">{project.type}</span>
+                <span>
+                  <strong class="block">{project.title}</strong>
+                  <span class="row-summary">{project.summary}</span>
+                </span>
+                <Icon name="lucide:chevron-right" class="h-4 w-4 opacity-60" aria-hidden="true" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </Card>
+  ))}
+
+  {articles.length > 0 && (
+    <Card class="px-5 py-6 sm:px-8 sm:py-7">
+      <section aria-labelledby="articles-title">
+        <div class="mb-3 flex flex-wrap items-baseline justify-between gap-2">
+          <h2 id="articles-title" class="text-xl font-bold sm:text-2xl">{home.recentTitle}</h2>
+          <a href="/blog/" class="link link-hover text-sm font-semibold">{home.recentLink}</a>
+        </div>
+        <ul class="divide-y divide-base-content/10">
+          {articles.map((post) => (
+            <li>
+              <a href={`/blog/${post.slug}/`} class="flex items-baseline justify-between gap-x-4 gap-y-1 flex-wrap py-3 hover:underline">
+                <span class="font-semibold">{post.data.title}</span>
+                <time datetime={articleDate.format(post.data.pubDate)} class="text-sm text-base-content/70">
+                  {articleDate.format(post.data.pubDate)}
+                </time>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </Card>
+  )}
+
 </BaseLayout>
+
+<style>
+  .home-hero {
+    background: #101c29;
+  }
+
+  .home-hero::before {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background: linear-gradient(90deg, #09131e 3%, #09131ef2 24%, #09131eaa 57%, #09131e10 100%);
+    content: "";
+  }
+
+  .hero-image {
+    object-position: 65% 52%;
+  }
+
+  .hero-title {
+    font-size: clamp(2.15rem, 6vw, 4.375rem);
+    letter-spacing: -0.045em;
+  }
+
+  .hero-action {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    gap: 0.45rem;
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.875rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+
+  .hero-primary {
+    background: #cfe7ff;
+    color: #102338;
+  }
+
+  .hero-primary:hover {
+    background: #edf6ff;
+  }
+
+  .hero-secondary {
+    border-color: #e2edfa80;
+    background: #09131e80;
+  }
+
+  .hero-secondary:hover {
+    border-color: #fff;
+  }
+
+  .hero-action:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
+  }
+
+  .home-row {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr) 1rem;
+    align-items: baseline;
+    gap: 0.65rem;
+    padding-block: 0.85rem;
+  }
+
+  .home-row:hover strong {
+    text-decoration: underline;
+  }
+
+  .row-type,
+  .row-summary {
+    font-size: 0.875rem;
+    opacity: 0.8;
+  }
+
+  .row-summary {
+    display: block;
+    margin-top: 0.2rem;
+  }
+
+  @media (max-width: 639px) {
+    .home-hero::before {
+      background: linear-gradient(90deg, #09131ef5, #09131eaa 70%, #09131e55);
+    }
+
+    .home-row {
+      grid-template-columns: minmax(0, 1fr) 1rem;
+      row-gap: 0.15rem;
+    }
+
+    .row-type {
+      grid-column: 1 / -1;
+    }
+
+  }
+</style>

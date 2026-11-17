@@ -1,0 +1,160 @@
+{
+  "home": {
+    "title": "首页",
+    "description": "这里没有东西",
+    "image": "/home-cover.webp",
+    "name": "Mo_Han136",
+    "education": "上海交通大学 · 机械工程本科 在读",
+    "bio": "前OIer，前ACMer，机械工程本硕。本站收录项目、论文、学习笔记和赛车视频作品。",
+    "actions": [
+      {
+        "label": "项目与作品",
+        "href": "/project/",
+        "icon": "lucide:folder"
+      },
+      {
+        "label": "读文章",
+        "href": "/blog/",
+        "icon": ""
+      }
+    ],
+    "recentTitle": "最近文章",
+    "recentLink": "全部文章",
+    "recentCount": 2
+  },
+  "about": {
+    "title": "关于",
+    "heading": "关于Mo_Han136",
+    "image": "/about.jpg",
+    "name": "Mo_Han136",
+    "education": "上海交通大学 · 机械与动力工程学院 · 机械工程 本科在读",
+    "bio": "前OIer，前ACMer，机械工程本硕。",
+    "actions": [
+      {
+        "label": "作品",
+        "href": "/project",
+        "icon": "lucide:folder"
+      },
+      {
+        "label": "文章",
+        "href": "/blog",
+        "icon": "lucide:book-open"
+      },
+      {
+        "label": "GitHub",
+        "href": "https://github.com/GoudoMahan",
+        "icon": "ri:github-line",
+        "target": "_blank"
+      },
+      {
+        "label": "Bilibili",
+        "href": "https://space.bilibili.com/475480857",
+        "icon": "ri:bilibili-line",
+        "target": "_blank"
+      },
+      {
+        "label": "邮箱",
+        "href": "mailto:mohan136.davidhu@gmail.com",
+        "icon": "lucide:mail"
+      }
+    ],
+    "keywordsTitle": "个人关键词",
+    "keywords": [
+      {
+        "title": "研究方向",
+        "text": "-"
+      },
+      {
+        "title": "个人兴趣",
+        "text": "F1（已电动）\nBanGDream（已取消）\nGTA（已疲倦）\n番剧（已疲倦）\nLoveLive（已半退坑）\n音游（已退坑）"
+      }
+    ],
+    "skillsTitle": "技能栈",
+    "skills": [
+      {
+        "name": "C++",
+        "icon": "simple-icons:cplusplus",
+        "color": "oklch(0.5 0.2 240)"
+      },
+      {
+        "name": "Python",
+        "icon": "simple-icons:python",
+        "color": "oklch(0.7 0.2 130)"
+      },
+      {
+        "name": "SolidWorks",
+        "icon": "lucide:box",
+        "color": "oklch(0.6 0.25 25)"
+      },
+      {
+        "name": "MATLAB",
+        "icon": "lucide:calculator",
+        "color": "oklch(0.7 0.25 30)"
+      }
+    ],
+    "competitionsTitle": "竞赛经历",
+    "competitions": [
+      {
+        "id": "acm-results",
+        "date": "2023 至今",
+        "title": "大学时期 · ACM 竞赛",
+        "results": [
+          ["2025 CCPC 北京市赛", "金奖"],
+          ["2024 ICPC EC-Final", "银奖"],
+          ["2024 ICPC 上海", "金奖"],
+          ["2024 ICPC 昆明", "银奖"],
+          ["2024 CCPC 重庆", "金奖"],
+          ["2023 ICPC 杭州", "金奖"],
+          ["2023 ICPC 合肥", "金奖"],
+          ["2023 CCPC 桂林", "银奖"]
+        ]
+      },
+      {
+        "id": "oi-results",
+        "date": "2017–2023",
+        "title": "中学时期 · OI 竞赛",
+        "results": [
+          ["2021 NOIP", "一等奖"],
+          ["2021 CSP-S", "一等奖"],
+          ["2021 WC", "银牌"],
+          ["2020 NOIP", "一等奖"],
+          ["2020 CSP-S", "一等奖"],
+          ["2019 CSP-S", "一等奖"],
+          ["2019 CSP-J", "一等奖"]
+        ]
+      }
+    ]
+  },
+  "friends": {
+    "title": "友链",
+    "image": "/friend.jpg",
+    "heading": "朋友",
+    "items": [
+      {
+        "name": "Ri_Nai",
+        "avatar": "https://github.com/Ri-Nai.png",
+        "description": "日奈",
+        "url": "https://ri-nai.github.io/",
+        "type": "friend"
+      },
+      {
+        "name": "vegetablefj",
+        "avatar": "https://github.com/vegetablefj.png",
+        "description": "傅杰",
+        "url": "https://fujiemath.com/",
+        "type": "friend"
+      }
+    ]
+  },
+  "projects": {
+    "title": "项目与作品",
+    "description": "Mo_Han136 的课程样机、编程实验、研究论文和个人创作。"
+  },
+  "blog": {
+    "title": "Blog"
+  },
+  "footer": {
+    "followTitle": "Social",
+    "rssLabel": "RSS"
+  }
+}

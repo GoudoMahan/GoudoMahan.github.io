@@ -1,117 +1,102 @@
 ---
 import { Icon } from "astro-icon/components";
-import MainCard from "@/components/MainCard.astro";
+import Card from "@/components/temple/Card.astro";
+import { projectGroups } from "@/content/projects";
+import { projects } from "@/content/site-pages.json";
+import {
+  editorPath,
+  isLocalEditor,
+  projectFields,
+  projectRevision,
+} from "@/integration/projectEditor";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const localEditor = import.meta.env.DEV && isLocalEditor(Astro.url.hostname);
 ---
 
-<BaseLayout title="作品">
-  <MainCard
-    title="作品"
-    description=""
-    image="/project.jpg"
-    infoIcon="lucide:code-2"
-  >
-    <section class="py-4">
-      <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-        <Icon name="lucide:star" class="w-6 h-6 text-primary" />
-        <span>代表作品待补充</span>
-      </h2>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {
-          [
-            {
-              name: "项目一待补充",
-              desc: "这里可以写项目用途、技术栈、解决的问题和你的职责。",
-            },
-            {
-              name: "项目二待补充",
-              desc: "这里可以写另一个作品，也可以是课程作业或个人练习。",
-            },
-            {
-              name: "项目三待补充",
-              desc: "如果暂时没有项目，可以先用这块作为后续预留位置。",
-            },
-            {
-              name: "项目四待补充",
-              desc: "你也可以在这里放网站、应用、脚本或设计作品。",
-            },
-          ].map((project) => (
-            <div class="card bg-base-200 p-6">
-              <h3 class="text-xl font-bold mb-2">{project.name}</h3>
-              <p class="text-base-content/80">{project.desc}</p>
-            </div>
-          ))
-        }
-      </div>
-    </section>
-
-    <!-- <section class="py-4">
-      <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-        <Icon name="lucide:folder" class="w-6 h-6 text-primary" />
-        <span>项目标签待补充</span>
-      </h2>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {
-          [
-            "前端项目待补充",
-            "工具脚本待补充",
-            "学习练习待补充",
-            "开源协作待补充",
-            "设计尝试待补充",
-            "其他内容待补充",
-          ].map((label) => (
-            <div class="card bg-base-200 p-5">
-              <div class="flex items-center gap-3 mb-3">
-                <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Icon name="lucide:tag" class="w-5 h-5 text-primary" />
-                </div>
-                <h3 class="font-bold">{label}</h3>
+<BaseLayout title={projects.title} description={projects.description}>
+  <Card class="px-6 pt-7 pb-2 sm:px-9 sm:pt-9">
+    <h1 class="text-3xl font-extrabold sm:text-4xl">{projects.title}</h1>
+    {projectGroups.map((group) => (
+      <section aria-labelledby={group.id} class="mt-6">
+        <h2 id={group.id} class="border-b border-base-content/15 pb-3 text-xl font-bold sm:text-2xl">{group.title}</h2>
+        <div class="divide-y divide-base-content/10">
+          {group.items.map((project) => (
+            <details class="group/project rounded-sm">
+              <summary class="flex cursor-pointer list-none items-start justify-between gap-3 rounded-sm py-4 hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary [&::-webkit-details-marker]:hidden">
+                <span class="min-w-0 break-words">
+                  <span class="block text-sm font-medium text-base-content/70">{project.type}</span>
+                  <span class="mt-1 block text-lg font-bold sm:text-xl">{project.title}</span>
+                  <span class="mt-1 block max-w-prose leading-relaxed text-base-content/85">{project.summary}</span>
+                </span>
+                <Icon name="lucide:chevron-down" class="mt-2 h-5 w-5 shrink-0 group-open/project:rotate-180" aria-hidden="true" />
+              </summary>
+              <div id={project.id} class="scroll-mt-28 pb-5">
+                {project.detail && (
+                  <p class="max-w-prose whitespace-pre-line break-words leading-relaxed text-base-content/80">{project.detail}</p>
+                )}
+                {project.link && (
+                  <a href={project.link.href} class="link mt-2 inline-block font-semibold">{project.link.label}</a>
+                )}
+                {project.photo && (
+                  <figure class="mt-4 max-w-sm">
+                    <img
+                      src={project.photo.src}
+                      alt=""
+                      width={project.photo.width}
+                      height={project.photo.height}
+                      loading="lazy"
+                      decoding="async"
+                      class="h-auto w-full rounded-lg"
+                    />
+                    <figcaption class="mt-2 text-sm text-base-content/75">{project.photo.caption}</figcaption>
+                  </figure>
+                )}
+                {localEditor && (
+                  <details class="mt-4 rounded-lg border border-base-content/15 bg-base-200 p-4">
+                    <summary class="cursor-pointer font-semibold">编辑这项作品</summary>
+                    <form action={editorPath} method="post" data-astro-reload class="mt-3 grid gap-3">
+                      <input type="hidden" name="id" value={project.id} />
+                      <input type="hidden" name="revision" value={projectRevision(project)} />
+                      {projectFields.map(({ name, label, maxLength }) => (
+                        <label class="grid gap-1 text-sm font-medium">
+                          {label}
+                          {name === "summary" || name === "detail" ? (
+                            <textarea
+                              name={name}
+                              maxlength={maxLength}
+                              required={name === "summary"}
+                              rows={name === "summary" ? 2 : 4}
+                              class="textarea textarea-bordered w-full"
+                            >{project[name] ?? ""}</textarea>
+                          ) : (
+                            <input
+                              name={name}
+                              maxlength={maxLength}
+                              required
+                              value={project[name]}
+                              class="input input-bordered w-full"
+                            />
+                          )}
+                        </label>
+                      ))}
+                      <div class="flex flex-wrap items-center gap-3">
+                        <button type="submit" class="btn btn-primary btn-sm">保存到本地</button>
+                        <small>改动写回项目文件，可在 Git 中查看。</small>
+                      </div>
+                    </form>
+                  </details>
+                )}
+                {localEditor && (
+                  <p id={`saved-${project.id}`} role="status" class="mt-3 hidden scroll-mt-28 text-sm font-medium target:block">
+                    已保存到本地。
+                  </p>
+                )}
               </div>
-              <p class="text-base-content/80">这里可以补充对应类别的项目说明、链接或截图。</p>
-            </div>
-          ))
-        }
-      </div>
-    </section> -->
-
-    <section class="py-4">
-      <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-        <Icon name="lucide:git-pull-request" class="w-6 h-6 text-primary" />
-        <span>协作经历待补充</span>
-      </h2>
-
-      <div class="card bg-base-200 p-6">
-        <ul class="space-y-5">
-          {
-            [
-              {
-                project: "协作方向 1 待补充",
-                description: "这里可以写你参与过的协作、贡献或团队项目。",
-              },
-              {
-                project: "协作方向 2 待补充",
-                description: "这里可以写你在项目中的角色、负责模块和产出。",
-              },
-              {
-                project: "协作方向 3 待补充",
-                description: "如果暂时没有协作经历，也可以先留作占位。",
-              },
-            ].map((contrib) => (
-              <li class="flex items-start gap-4">
-                <div class="flex-shrink-0 bg-base-300 p-2 rounded-full">
-                  <Icon name="lucide:git-commit" class="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <h3 class="text-lg font-bold">{contrib.project}</h3>
-                  <p class="text-base-content/80">{contrib.description}</p>
-                </div>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-    </section>
-  </MainCard>
+            </details>
+          ))}
+        </div>
+      </section>
+    ))}
+  </Card>
 </BaseLayout>

@@ -14,6 +14,7 @@ import {
 } from "@config";
 import ElementCrossing from "astro-vtbot/components/ElementCrossing.astro";
 import PointerOnNavigation from "astro-vtbot/components/PointerOnNavigation.astro";
+import { contentEditorPath, isLocalEditor } from "@/integration/projectEditor";
 
 const {
   title,
@@ -23,6 +24,15 @@ const {
   showTOC = false,
   isIndexed = true,
 } = Astro.props;
+const pathSection = Astro.url.pathname.split("/")[1];
+const editorSection =
+  new Map([
+    ["", "home"],
+    ["about", "about"],
+    ["project", "projects"],
+    ["friend", "friends"],
+    ["blog", "posts"],
+  ]).get(pathSection) ?? "home";
 ---
 
 <!doctype html>
@@ -69,6 +79,11 @@ const {
         <main
           class="col-span-1 md:col-span-4 lg:col-span-3 bg-transparent order-1 md:order-2 mt-16 md:mt-0 flex flex-col gap-4"
         >
+          {import.meta.env.DEV && isLocalEditor(Astro.url.hostname) && (
+            <a href={`${contentEditorPath}#${editorSection}`} data-astro-reload class="btn btn-sm btn-primary self-end">
+              编辑本站
+            </a>
+          )}
           <div class="flex-grow flex flex-col gap-4">
             <slot />
           </div>

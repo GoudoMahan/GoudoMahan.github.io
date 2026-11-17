@@ -1,0 +1,76 @@
+[
+  {
+    "id": "engineering-and-research",
+    "title": "工程与研究",
+    "items": [
+      {
+        "id": "automatic-stamping",
+        "type": "课程样机",
+        "title": "自动盖章机",
+        "summary": "负责设计和调试传送带与摆正机构，利用倾斜传送带、挡板和重力摆正物料。",
+        "detail": "团队样机完成自动输送与盖章。单次盖章周期约 8 秒，定位精度约 ±1 mm，获课程项目展优胜奖。",
+        "photo": {
+          "src": "/stamping-conveyor.webp",
+          "caption": "自动盖章机样机的传送带与挡板",
+          "width": 960,
+          "height": 720
+        }
+      },
+      {
+        "id": "table-tennis-launcher",
+        "type": "课程样机",
+        "title": "便携式乒乓球发球机",
+        "summary": "参与方案设计，负责外壳结构设计与组装。",
+        "detail": "团队样机完成自动装球，并通过调节摩擦轮转速初步实现九种发球样式，获「潍柴杯」课程项目展优秀展示奖。"
+      },
+      {
+        "id": "sparse-matrix-multiplication",
+        "type": "编程实验",
+        "title": "CUDA 稀疏矩阵乘法评测",
+        "summary": "比较内积、外积和按行展开三种 GPU 实现，以 cuSPARSE 为基准。",
+        "detail": "公开仓库包含 CUDA 源码、测试用稀疏矩阵与实验报告。",
+        "link": {
+          "href": "https://github.com/GoudoMahan/Sparse-Matrix-Multiplication-Experiment",
+          "label": "查看源码和实验报告"
+        }
+      },
+      {
+        "id": "single-pilot-operation",
+        "type": "会议论文",
+        "title": "单一飞行员驾驶的人机协作研究",
+        "summary": "梳理单飞行员运行中的 AI 辅助研究，提出飞行员、AI 与地面操作员的概念性分工框架。",
+        "detail": "论文于 2026 年 4 月发表于 CONF-SEML 2026 会议论文集。",
+        "link": {
+          "href": "https://doi.org/10.54254/2755-2721/2026.GU32739",
+          "label": "阅读论文"
+        }
+      }
+    ]
+  },
+  {
+    "id": "published",
+    "title": "视频与网站",
+    "items": [
+      {
+        "id": "f1",
+        "type": "视频创作",
+        "title": "F1 BanGDream 企划",
+        "summary": "尝试把 F1 车队和 BanG Dream! 乐队对应起来，已有企划文章和视频公开。",
+        "link": {
+          "href": "/blog/20260427f1bangdream/",
+          "label": "阅读企划与观看视频"
+        }
+      },
+      {
+        "id": "personal-site",
+        "type": "个人网站",
+        "title": "Mo_Han136 的博客",
+        "summary": "用 Astro 和 Frosti 搭建，已通过 GitHub Pages 上线，用来整理学习笔记和 F1 随记。",
+        "link": {
+          "href": "https://github.com/GoudoMahan/GoudoMahan.github.io",
+          "label": "查看 GitHub 仓库"
+        }
+      }
+    ]
+  }
+]

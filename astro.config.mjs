@@ -12,6 +12,7 @@ import remarkMath from "remark-math";
 
 import { CODE_THEME, USER_SITE } from "./src/config.ts";
 
+import localContentEditor from "./src/integration/projectEditor.ts";
 import updateConfig from "./src/integration/updateConfig.ts";
 
 import { remarkReadingTime } from "./src/plugins/remark-reading-time";
@@ -25,7 +26,7 @@ export default defineConfig({
       includePaths: ["./src/styles"],
     },
   },
-  integrations: [updateConfig(), expressiveCode({
+  integrations: [updateConfig(), localContentEditor(), expressiveCode({
     themes: [CODE_THEME],
     styleOverrides: {
       borderRadius: "0.75rem",

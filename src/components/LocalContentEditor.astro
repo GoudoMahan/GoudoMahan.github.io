@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>编辑本站</title>
+  </head>
+  <body>
+    <main class="local-editor">
+      <header>
+        <div>
+          <h1>编辑本站</h1>
+          <p>改动保存到本地仓库。发布仍由 Git 提交和推送完成。</p>
+        </div>
+        <a href="/" target="_blank" rel="noopener noreferrer">打开网站预览 ↗</a>
+      </header>
+
+      <div class="toolbar">
+        <label>编辑内容 <select id="editor-choice"></select></label>
+        <details>
+          <summary>新建文章</summary>
+          <form id="editor-new">
+            <label>文章标题 <input name="title" required maxlength="100" /></label>
+            <label>文章地址 <input name="slug" placeholder="例如 design-notes" required pattern="[a-z0-9][a-z0-9\-]{0,63}" /></label>
+            <button>开始写草稿</button>
+          </form>
+        </details>
+      </div>
+
+      <section id="editor-document" hidden>
+        <div class="toolbar">
+          <div>
+            <h2 id="editor-title"></h2>
+            <code id="editor-path"></code>
+          </div>
+          <button id="editor-mode" type="button" hidden>编辑源文件</button>
+        </div>
+        <p id="editor-hint"></p>
+        <div id="editor-fields"></div>
+        <textarea id="editor-source" aria-label="源文件内容" spellcheck="false" hidden></textarea>
+        <div class="save-bar">
+          <button id="editor-save" type="button" disabled>保存到本地</button>
+          <p id="editor-status" aria-live="polite" role="status"></p>
+        </div>
+      </section>
+      <p id="editor-startup" role="status">正在读取站点内容…</p>
+    </main>
+  </body>
+</html>
+
+<script>
+  import { isSeq, parseDocument } from "yaml";
+
+  type Entry = { key: string; label: string; file: string; format: string };
+  type Json = string | boolean | number | null | Json[] | { [key: string]: Json };
+  const labels = new Map(Object.entries({
+    home: "首页", about: "关于", friends: "友链", projects: "作品页",
+    blog: "文章列表", footer: "页脚", actions: "按钮与链接",
+    title: "标题", description: "描述", image: "封面图地址", name: "名称",
+    heading: "页面主标题", education: "教育信息", bio: "简介", label: "显示文字",
+    href: "链接地址", target: "打开方式", icon: "图标名称",
+    recentCount: "首页显示的文章数", recentTitle: "近文区标题", recentLink: "全部文章入口",
+    keywordsTitle: "关键词区标题", keywords: "关键词", text: "正文",
+    skillsTitle: "技能区标题", skills: "技能", color: "颜色",
+    competitionsTitle: "竞赛区标题", competitions: "竞赛经历", date: "日期",
+    results: "比赛与奖项", items: "条目", type: "类别", avatar: "头像地址", url: "站点地址",
+    id: "条目标识", summary: "摘要", detail: "详情", link: "资料链接",
+    photo: "照片", src: "图片地址", caption: "图片说明", width: "图片宽度",
+    height: "图片高度", followTitle: "关注区标题", rssLabel: "订阅入口文字",
+    site: "站点设置", user: "个人信息", menu: "导航菜单", subItems: "子菜单",
+    social: "社交链接", sidebar: "侧栏", tab: "浏览器标签", svg: "图标名称",
+    ariaLabel: "无障碍标签", favicon: "网站图标", language: "语言",
+    theme: "主题", light: "浅色主题", dark: "深色主题", code: "代码主题",
+    date_format: "日期格式", pageSize: "每页文章数",
+  }));
+  const choice = document.querySelector<HTMLSelectElement>("#editor-choice")!;
+  const newArticle = document.querySelector<HTMLFormElement>("#editor-new")!;
+  const panel = document.querySelector<HTMLElement>("#editor-document")!;
+  const title = document.querySelector<HTMLElement>("#editor-title")!;
+  const file = document.querySelector<HTMLElement>("#editor-path")!;
+  const hint = document.querySelector<HTMLElement>("#editor-hint")!;
+  const fields = document.querySelector<HTMLElement>("#editor-fields")!;
+  const source = document.querySelector<HTMLTextAreaElement>("#editor-source")!;
+  const mode = document.querySelector<HTMLButtonElement>("#editor-mode")!;
+  const save = document.querySelector<HTMLButtonElement>("#editor-save")!;
+  const status = document.querySelector<HTMLElement>("#editor-status")!;
+  const startup = document.querySelector<HTMLElement>("#editor-startup")!;
+  const endpoint = "/__local/content";
+  const entries = new Map<string, Entry>();
+  const requested = new URLSearchParams(`key=${location.hash.slice(1)}`).get("key") ?? "";
+  let current: Entry | undefined;
+  let revision: string | null;
+  let original = "";
+  let draft = "";
+  let raw = true;
+  let saving = false;
+
+  const dirty = () => current !== undefined && (revision === null || draft !== original);
+  const mayLeave = () => !dirty() || confirm("当前改动还没保存。要切换到其他内容吗？");
+  const uniqueId = (prefix: string) => `${prefix}-${crypto.randomUUID().slice(0, 8)}`;
+  const supportsForm = (entry: Entry) => entry.format === "json" || entry.key === "settings";
+  const listTemplates = new Map<string, () => Json>([
+    ["actions", () => ({ label: "", href: "", icon: "" })],
+    ["keywords", () => ({ title: "", text: "" })],
+    ["skills", () => ({ name: "", icon: "lucide:code-2", color: "#3d64a7" })],
+    ["competitions", () => ({ id: uniqueId("competition"), date: "", title: "", results: [] })],
+    ["results", () => ["", ""]],
+    ["friend-items", () => ({ name: "", avatar: "", description: "", url: "", type: "friend" })],
+    ["project-items", () => ({ id: uniqueId("project"), type: "", title: "", summary: "", detail: "" })],
+    ["project-groups", () => ({ id: uniqueId("group"), title: "", items: [] })],
+    ["menu", () => ({ id: uniqueId("menu"), text: "", href: "", svg: "lucide:link", target: "_self", subItems: [] })],
+    ["subItems", () => ({ id: uniqueId("submenu"), text: "", href: "", svg: "lucide:link", target: "_self" })],
+    ["social", () => ({ href: "", ariaLabel: "", title: "", svg: "lucide:link" })],
+  ]);
+  window.addEventListener("beforeunload", (event) => {
+    if (dirty()) event.preventDefault();
+  });
+
+  function readFields() {
+    if (current?.key === "settings") {
+      const yaml = parseDocument(draft);
+      if (yaml.errors.length) throw new Error("YAML 有格式错误，请修正后再切换。");
+      return { data: yaml.toJS() as Json, yaml };
+    }
+    return { data: JSON.parse(draft) as Json, yaml: undefined };
+  }
+
+  function showForm() {
+    const { data, yaml } = readFields();
+    fields.replaceChildren();
+    const commitField = () => {
+      draft = yaml ? yaml.toString() : JSON.stringify(data, null, 2) + "\n";
+      status.textContent = "";
+      save.disabled = saving || !dirty();
+    };
+
+    function render(value: Json, label: string, depth: number, update: (value: Json) => void, key = "", fieldPath: (string | number)[] = []): HTMLElement {
+      if (value && typeof value === "object") {
+        const group = document.createElement("details");
+        group.open = depth === 0 || (depth === 1 && requested === key);
+        const heading = document.createElement("summary");
+        heading.textContent = label;
+        group.append(heading);
+        if (Array.isArray(value)) {
+          const items = value;
+          const yamlList = yaml?.getIn(fieldPath, true);
+          const listKey = key === "items"
+            ? current?.key === "projects" ? "project-items" : "friend-items"
+            : depth === 0 && current?.key === "projects" ? "project-groups" : key;
+          const createItem = listTemplates.get(listKey);
+          const rows = document.createElement("div");
+          group.append(rows);
+          const button = (label: string, action: () => void) => {
+            const control = document.createElement("button");
+            control.type = "button";
+            control.textContent = label;
+            control.addEventListener("click", action);
+            return control;
+          };
+
+          function refresh(openItems = new Set<Json>()) {
+            rows.replaceChildren();
+            items.forEach((item, index) => {
+              const name = Array.isArray(item) ? item[0] : item && typeof item === "object" ? item.title ?? item.name ?? item.label ?? item.text : undefined;
+              const itemLabel = key === "result" ? ["赛事", "奖项"][index] : `${index + 1}. ${typeof name === "string" && name ? name : "条目"}`;
+              const row = render(item, itemLabel, depth + 1, (next) => { items[index] = next; }, key === "results" ? "result" : "", [...fieldPath, index]);
+              if (!createItem) {
+                rows.append(row);
+                return;
+              }
+              const wrapper = document.createElement("div");
+              wrapper.className = "editor-list-row";
+              const controls = document.createElement("div");
+              controls.className = "editor-list-controls";
+              if (row instanceof HTMLDetailsElement) row.open = openItems.has(item);
+              const moveTo = (destination: number) => {
+                if (destination === index) return;
+                const expanded = expandedItems();
+                const [moved] = items.splice(index, 1);
+                items.splice(destination, 0, moved);
+                if (isSeq(yamlList)) {
+                  const [node] = yamlList.items.splice(index, 1);
+                  yamlList.items.splice(destination, 0, node);
+                }
+                commitField();
+                refresh(expanded);
+                rows.children[destination]?.querySelector("summary")?.focus();
+              };
+              const grip = document.createElement("span");
+              grip.className = "editor-list-grip";
+              grip.textContent = "⠿ 拖动";
+              grip.setAttribute("aria-hidden", "true");
+              let startY = 0;
+              let destination = index;
+              let marker: Element | undefined;
+              grip.addEventListener("pointerdown", (event) => {
+                if (!event.isPrimary || event.button !== 0) return;
+                startY = event.clientY;
+                destination = index;
+                grip.setPointerCapture(event.pointerId);
+              });
+              grip.addEventListener("pointermove", (event) => {
+                if (!grip.hasPointerCapture(event.pointerId) || (Math.abs(event.clientY - startY) < 4 && !wrapper.classList.contains("is-dragging"))) return;
+                wrapper.classList.add("is-dragging");
+                const candidates = Array.from(rows.children);
+                const crossing = candidates.findIndex((other) => {
+                  const rect = other.getBoundingClientRect();
+                  return event.clientY < rect.top + rect.height / 2;
+                });
+                const boundary = crossing === -1 ? candidates.length : crossing;
+                destination = boundary > index ? boundary - 1 : boundary;
+                marker?.classList.remove("drop-before", "drop-after");
+                marker = candidates[destination];
+                if (destination !== index) marker?.classList.add(destination < index ? "drop-before" : "drop-after");
+                if (event.clientY < 45) window.scrollBy({ top: -24, behavior: "instant" });
+                if (event.clientY > window.innerHeight - 45) window.scrollBy({ top: 24, behavior: "instant" });
+              });
+              grip.addEventListener("pointerup", (event) => {
+                if (grip.hasPointerCapture(event.pointerId)) moveTo(destination);
+              });
+              grip.addEventListener("lostpointercapture", () => {
+                wrapper.classList.remove("is-dragging");
+                marker?.classList.remove("drop-before", "drop-after");
+              });
+              controls.append(grip);
+              for (const [offset, caption] of [[-1, "上移"], [1, "下移"]] as const) {
+                const destination = index + offset;
+                const move = button(caption, () => moveTo(destination));
+                move.disabled = destination < 0 || destination >= items.length;
+                move.setAttribute("aria-label", `${caption}${itemLabel}`);
+                controls.append(move);
+              }
+              wrapper.append(row, controls);
+              rows.append(wrapper);
+            });
+          }
+
+          function expandedItems() {
+            return new Set(items.filter((_, index) => rows.children[index]?.firstElementChild?.hasAttribute("open")));
+          }
+
+          refresh();
+          if (createItem) {
+            group.append(button("添加条目", () => {
+              const expanded = expandedItems();
+              const item = createItem();
+              items.push(item);
+              if (yaml && isSeq(yamlList)) yamlList.items.push(yaml.createNode(item));
+              expanded.add(item);
+              commitField();
+              refresh(expanded);
+              rows.lastElementChild?.querySelector<HTMLElement>('input:not([name="id"]), textarea')?.focus();
+            }));
+          }
+        } else {
+          for (const [field, item] of Object.entries(value)) {
+            group.append(render(item, labels.get(field) ?? field, depth + 1, (next) => { value[field] = next; }, field, [...fieldPath, field]));
+          }
+        }
+        return group;
+      }
+
+      const field = document.createElement("label");
+      field.className = "editor-field";
+      field.textContent = label;
+      const multiline = typeof value === "string" && (value.length > 90 || /^(bio|description|summary|text|detail)$/.test(key) || value.includes("\n"));
+      const control = multiline ? document.createElement("textarea") : document.createElement("input");
+      control.name = key || label;
+      control.value = value === null ? "" : String(value);
+      if (control instanceof HTMLTextAreaElement) control.rows = 3;
+      else if (typeof value === "number") control.type = "number";
+      else if (typeof value === "boolean") {
+        control.type = "checkbox";
+        control.checked = value;
+      }
+      control.addEventListener("input", () => {
+        const next = control instanceof HTMLInputElement && control.type === "number"
+          ? control.valueAsNumber
+          : control instanceof HTMLInputElement && control.type === "checkbox"
+            ? control.checked
+            : control.value;
+        update(next);
+        yaml?.setIn(fieldPath, next);
+        commitField();
+      });
+      field.append(control);
+      return field;
+    }
+
+    if (data && typeof data === "object") {
+      fields.append(render(data, current?.label ?? "内容", 0, () => {}));
+    }
+  }
+
+  function show() {
+    if (!current) return;
+    panel.hidden = false;
+    startup.hidden = true;
+    title.textContent = current.label;
+    file.textContent = current.file;
+    mode.hidden = !supportsForm(current);
+    source.hidden = !raw;
+    fields.hidden = raw;
+    mode.textContent = raw ? "返回字段编辑" : "编辑源文件";
+    hint.textContent = supportsForm(current)
+      ? "抓住「拖动」上下排序，也可以使用上移和下移按钮。删除条目或补充缺省字段，可切换到源文件。"
+      : current.key.startsWith("post:")
+        ? "保留开头的 YAML 元数据区。正文使用 Markdown；已有 MDX 文章也支持组件语法。"
+        : "使用 YAML 编辑。保存前会检查基本结构与链接格式。";
+    if (raw) source.value = draft;
+    else showForm();
+    save.disabled = !dirty();
+  }
+
+  async function select(key: string) {
+    const entry = entries.get(key);
+    if (!entry) return;
+    choice.disabled = mode.disabled = save.disabled = newArticle.querySelector("button")!.disabled = true;
+    try {
+      const response = await fetch(`${endpoint}?key=${encodeURIComponent(key)}`);
+      if (!response.ok) throw new Error(await response.text());
+      const data = await response.json();
+      original = draft = data.source;
+      revision = data.revision;
+      current = entry;
+      raw = !supportsForm(entry);
+      choice.value = key;
+      const section = key === "pages" ? requested : key;
+      history.replaceState(null, "", `#${encodeURIComponent(section || key)}`);
+      status.textContent = "";
+      show();
+    } catch (error) {
+      if (current) choice.value = current.key;
+      const message = error instanceof Error ? error.message : "读取失败。";
+      (current ? status : startup).textContent = message;
+    } finally {
+      choice.disabled = mode.disabled = newArticle.querySelector("button")!.disabled = false;
+      save.disabled = !dirty();
+    }
+  }
+
+  choice.addEventListener("change", () => {
+    if (mayLeave()) void select(choice.value);
+    else if (current) choice.value = current.key;
+  });
+  source.addEventListener("input", () => {
+    draft = source.value;
+    status.textContent = "";
+    save.disabled = saving || !dirty();
+  });
+  mode.addEventListener("click", () => {
+    try {
+      if (raw) readFields();
+      raw = !raw;
+      show();
+      status.textContent = "";
+    } catch {
+      status.textContent = "源文件格式有误，请修正后再切换。";
+    }
+  });
+
+  newArticle.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!mayLeave()) return;
+    const form = new FormData(newArticle);
+    const slug = String(form.get("slug"));
+    const heading = String(form.get("title")).trim();
+    if (!heading) return;
+    const key = `post:${slug}.md`;
+    if (entries.has(key) || entries.has(`post:${slug}.mdx`)) {
+      startup.hidden = false;
+      startup.textContent = "该文章地址已存在，请换一个。";
+      return;
+    }
+    revision = null;
+    current = { key, label: heading, file: `src/content/blog/${slug}.md`, format: "markdown" };
+    const date = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Shanghai", dateStyle: "short" }).format(new Date());
+    original = "";
+    draft = `---\ntitle: ${JSON.stringify(heading)}\ndescription: ""\npubDate: "${date}"\ndraft: true\n---\n\n`;
+    raw = true;
+    choice.selectedIndex = -1;
+    status.textContent = "";
+    show();
+    newArticle.closest("details")!.open = false;
+    source.focus();
+  });
+
+  save.addEventListener("click", async () => {
+    if (saving || !current || !dirty()) return;
+    const entry = current;
+    const sent = draft;
+    saving = true;
+    save.disabled = true;
+    choice.disabled = mode.disabled = newArticle.querySelector("button")!.disabled = true;
+    try {
+      const response = await fetch(`${endpoint}?key=${encodeURIComponent(entry.key)}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ source: sent, revision }),
+      });
+      if (!response.ok) throw new Error(await response.text());
+      revision = (await response.json()).revision;
+      original = sent;
+      if (!entries.has(entry.key)) {
+        entries.set(entry.key, entry);
+        choice.querySelector('optgroup[label="博客文章"]')!.append(new Option(entry.label, entry.key));
+        choice.value = entry.key;
+        history.replaceState(null, "", `#${encodeURIComponent(entry.key)}`);
+      }
+      status.textContent = "已保存到本地。刷新预览即可看到更改。";
+    } catch (error) {
+      status.textContent = error instanceof Error ? error.message : "保存失败，请重试。";
+    } finally {
+      saving = false;
+      choice.disabled = mode.disabled = newArticle.querySelector("button")!.disabled = false;
+      save.disabled = !dirty();
+    }
+  });
+
+  async function loadCatalog() {
+    const response = await fetch(endpoint);
+    if (!response.ok) throw new Error(await response.text());
+    const documents: Entry[] = await response.json();
+    for (const [groupLabel, isPost] of [["站点内容", false], ["博客文章", true]] as const) {
+      const group = document.createElement("optgroup");
+      group.label = groupLabel;
+      for (const entry of documents.filter((entry) => entry.key.startsWith("post:") === isPost)) {
+        entries.set(entry.key, entry);
+        group.append(new Option(entry.label, entry.key));
+      }
+      choice.append(group);
+    }
+    const post = documents.find((doc) => doc.key.startsWith("post:") && !doc.label.startsWith("[example]"));
+    await select(requested === "posts" ? post?.key ?? "pages" : entries.has(requested) ? requested : "pages");
+  }
+
+  void loadCatalog().catch((error) => {
+    startup.textContent = error instanceof Error ? error.message : "内容列表加载失败。";
+  });
+</script>
+
+<style is:global>
+  html { color-scheme: light; background: #edf1f5; }
+  body { margin: 0; color: #172c43; font: 15px/1.5 system-ui, "Microsoft YaHei", sans-serif; }
+  .local-editor { max-width: 900px; margin: 0 auto; padding: 24px; }
+  .local-editor header, .local-editor .toolbar, .local-editor .save-bar {
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;
+  }
+  .local-editor h1 { margin: 0; font-size: 32px; }
+  .local-editor h2 { margin: 0 0 4px; font-size: 22px; }
+  .local-editor p { margin: 6px 0; }
+  .local-editor header > div p, .local-editor #editor-hint, .local-editor code { color: #475b71; }
+  .local-editor .toolbar, .local-editor #editor-document { margin-top: 20px; }
+  .local-editor #editor-document { padding: 20px; background: white; border: 1px solid #cbd6e1; border-radius: 12px; }
+  .local-editor #editor-document > .toolbar { margin-top: 0; }
+  .local-editor #editor-document a, .local-editor header a { color: #0754a3; }
+  .local-editor button, .local-editor select, .local-editor input, .local-editor textarea {
+    box-sizing: border-box; font: inherit; border: 1px solid #9aaec3; border-radius: 6px;
+    color: inherit; background: #fff; padding: 8px 10px;
+  }
+  .local-editor input, .local-editor textarea { width: 100%; }
+  .local-editor textarea { resize: vertical; }
+  .local-editor button, .local-editor summary { cursor: pointer; }
+  .local-editor button:disabled { cursor: default; opacity: .55; }
+  .local-editor #editor-save { background: #165a9f; color: white; border-color: #165a9f; }
+  .local-editor #editor-source { min-height: 50vh; font-family: ui-monospace, Consolas, monospace; font-size: 14px; }
+  .local-editor #editor-new, .local-editor #editor-fields details { padding: 10px 12px; margin: 6px 0; border: 1px solid #d6e0e9; border-radius: 8px; }
+  .local-editor #editor-fields details[open] > summary { margin-bottom: 6px; }
+  .local-editor .editor-list-row {
+    position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 8px;
+  }
+  .local-editor .editor-list-controls { display: flex; gap: 6px; margin-top: 7px; }
+  .local-editor .editor-list-controls button { padding: 6px 8px; }
+  .local-editor .editor-list-grip {
+    align-self: center; padding: 5px 6px; border-radius: 5px; white-space: nowrap;
+    cursor: grab; user-select: none; touch-action: none; color: #165a9f; background: #edf4fb;
+  }
+  .local-editor .is-dragging > details { opacity: .55; }
+  .local-editor .is-dragging .editor-list-grip { cursor: grabbing; }
+  .local-editor .drop-before::before, .local-editor .drop-after::after {
+    content: ""; position: absolute; z-index: 1; inset-inline: 0;
+    height: 2px; background: #165a9f; pointer-events: none;
+  }
+  .local-editor .drop-before::before { top: 0; }
+  .local-editor .drop-after::after { bottom: 0; }
+  .local-editor #editor-new label, .local-editor .editor-field { display: grid; gap: 3px; margin-bottom: 10px; }
+  .local-editor .save-bar { justify-content: flex-start; margin-top: 14px; }
+  .local-editor :focus-visible { outline: 2px solid #165a9f; outline-offset: 2px; }
+  @media (max-width: 520px) {
+    .local-editor { padding: 14px; }
+    .local-editor #editor-document { padding: 12px; }
+    .local-editor select { max-width: 100%; }
+    .local-editor .editor-list-row { grid-template-columns: minmax(0, 1fr); gap: 0; }
+    .local-editor .editor-list-controls { margin: 0 0 8px; }
+  }
+</style>

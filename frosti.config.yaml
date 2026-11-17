@@ -2,7 +2,7 @@
 site:
   tab: Mo_Han136
   title: Mo_Han136
-  description: 这里是Mo_Han136的个人主页，展示自我介绍、项目作品和联系信息。
+  description: Mo_Han136 的个人主页，记录机械工程项目、学习笔记和 F1 视频创作。
   language: zh
   favicon: /favicon.ico
   theme:
@@ -68,14 +68,10 @@ site:
 # 用户个人信息
 user:
   name: Mo_Han136
-  site: "https://example.com"
+  site: "https://goudomahan.github.io"
   avatar: /profile.png
   sidebar:
     social:
-      - href: "https://example.com/"
-        ariaLabel: 待补充支持链接
-        title: 待补充支持链接
-        svg: "ri:cup-line"
       - href: "https://github.com/GoudoMahan"
         ariaLabel: GitHub 主页
         title: GitHub 主页
@@ -90,20 +86,24 @@ user:
         svg: "ri:twitter-line"
   footer:
     social:
-      - href: "https://example.com/"
-        ariaLabel: 待补充支持链接
-        title: 待补充支持链接
-        svg: "ri:cup-line"
       - href: "https://github.com/GoudoMahan"
         ariaLabel: GitHub 主页
-        title: GitHub 主页
+        title: GitHub
         svg: "ri:github-line"
       - href: "https://space.bilibili.com/475480857"
-        ariaLabel: Bilibili主页
-        title: Bilibili主页
+        ariaLabel: 哔哩哔哩主页
+        title: 哔哩哔哩
         svg: "ri:bilibili-line"
+      - href: "https://space.bilibili.com/475480857/dynamic"
+        ariaLabel: 哔哩哔哩动态
+        title: B站动态
+        svg: "ri:chat-3-line"
+      - href: "https://space.bilibili.com/475480857/lists/7941360?type=season"
+        ariaLabel: 胡闹P房F1 视频合集
+        title: 胡闹P房F1
+        svg: "lucide:clapperboard"
       - href: "https://x.com/Mo_Han136"
         ariaLabel: X 主页
-        title: X 主页
-        svg: "ri:twitter-line"
+        title: X
+        svg: "ri:twitter-x-line"
   
