@@ -1,5 +1,25 @@
 [
   {
+    "id": "doing-now",
+    "title": "正在参与",
+    "items": [
+      {
+        "id": "logistics-digital-twin",
+        "type": "毕业设计",
+        "title": "物流设备数字孪生",
+        "summary": "在 Unity 中搭建物流设备的离线仿真，复现基板取放、转运和缓存流程。",
+        "detail": "已有直送、缓存中转和先进先出等工况的离线演示，验证范围为仿真中的动作与几何关系。"
+      },
+      {
+        "id": "robot-leg-simulation",
+        "type": "课程项目",
+        "title": "机器人单腿机构设计与仿真",
+        "summary": "围绕三自由度单腿机构开展构型设计和足端轨迹分析。",
+        "detail": "小组已选定包含髋侧摆、髋俯仰和四杆传动膝的方案，并推导椭圆步态对应的关节角。"
+      }
+    ]
+  },
+  {
     "id": "engineering-and-research",
     "title": "工程与研究",
     "items": [
@@ -9,6 +29,10 @@
         "title": "自动盖章机",
         "summary": "负责设计和调试传送带与摆正机构，利用倾斜传送带、挡板和重力摆正物料。",
         "detail": "团队样机完成自动输送与盖章。单次盖章周期约 8 秒，定位精度约 ±1 mm，获课程项目展优胜奖。",
+        "link": {
+          "href": "https://me.sjtu.edu.cn/bkjx/tg_news/3298.html",
+          "label": "查看《设计与制造Ⅱ》项目展报道"
+        },
         "photo": {
           "src": "/stamping-conveyor.webp",
           "caption": "自动盖章机样机的传送带与挡板",
@@ -21,7 +45,11 @@
         "type": "课程样机",
         "title": "便携式乒乓球发球机",
         "summary": "参与方案设计，负责外壳结构设计与组装。",
-        "detail": "团队样机完成自动装球，并通过调节摩擦轮转速初步实现九种发球样式，获「潍柴杯」课程项目展优秀展示奖。"
+        "detail": "团队样机完成自动装球，并通过调节摩擦轮转速初步实现九种发球样式，获「潍柴杯」课程项目展优秀展示奖。",
+        "link": {
+          "href": "https://lcme.sjtu.edu.cn/openlab/xxtz/tzgg/20250624102542",
+          "label": "查看《设计与制造Ⅰ》项目展报道"
+        }
       },
       {
         "id": "sparse-matrix-multiplication",
@@ -41,8 +69,8 @@
         "summary": "梳理单飞行员运行中的 AI 辅助研究，提出飞行员、AI 与地面操作员的概念性分工框架。",
         "detail": "论文于 2026 年 4 月发表于 CONF-SEML 2026 会议论文集。",
         "link": {
-          "href": "https://doi.org/10.54254/2755-2721/2026.GU32739",
-          "label": "阅读论文"
+          "href": "https://ace.ewapub.com/article/view/32739",
+          "label": "阅读开放获取论文"
         }
       }
     ]
@@ -52,13 +80,36 @@
     "title": "视频与网站",
     "items": [
       {
-        "id": "f1",
-        "type": "视频创作",
-        "title": "F1 BanGDream 企划",
-        "summary": "尝试把 F1 车队和 BanG Dream! 乐队对应起来，已有企划文章和视频公开。",
+        "id": "f1-driver-tree",
+        "type": "小玩意儿",
+        "title": "F1 车手实力关系树",
+        "summary": "用同队车手逐场比赛的积分对比，探索车手之间的胜负关系。",
+        "detail": "可按赛季、共同发车次数等条件筛选，并查看每条关系的逐场依据。间接关系仅用于探索比较路径。",
         "link": {
-          "href": "/blog/20260427f1bangdream/",
-          "label": "阅读企划与观看视频"
+          "href": "https://f1-driver-tree.fey-creek-7670.chatgpt.site/",
+          "label": "打开关系树"
+        }
+      },
+      {
+        "id": "f1-driver-age",
+        "type": "小玩意儿",
+        "title": "F1 车手生日与年龄图",
+        "summary": "把 2026 和 2027 赛季的车手按出生月份或车队分组，直观比较年龄分布。",
+        "detail": "可调整照片、排序、配色和画布布局。完成后可导出 PNG 或 JPEG 海报，也可用 JSON 保存和恢复自定义数据。",
+        "link": {
+          "href": "https://goudomahan.github.io/F1driver-age/",
+          "label": "打开年龄图"
+        }
+      },
+      {
+        "id": "f1-fantasy-helper",
+        "type": "交互网站",
+        "title": "F1 Fantasy Helper",
+        "summary": "查看 F1 Fantasy 积分和价格走势，对比车手并探索不同策略下的预测与示例阵容。",
+        "detail": "公开演示采用 2026 赛季静态数据快照，包含车手与车队历史数据、比赛数据覆盖情况和模型回测。",
+        "link": {
+          "href": "https://goudomahan.github.io/F1_Fantasy_Helper/",
+          "label": "打开公开演示"
         }
       },
       {
